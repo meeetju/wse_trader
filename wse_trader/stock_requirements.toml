@@ -1,0 +1,10 @@
+title = "Stocks indicators requirements"
+
+[requirements]
+p_e_max_limit = 15.0
+roe_min_limit = 15.0
+dividend_years = ['2022', '2021', '2020']
+p_bv_max_limit = 3.0
+p_bv_g_max_limit = 3.0
+ratings = ['AAA', 'AA+', 'AA', 'AA-', 'A+', 'A', 'A-', 'BBB+', 'BBB', 'BBB-', 'BB+', 'BB']
+f_score = 7.0
