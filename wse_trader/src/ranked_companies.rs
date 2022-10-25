@@ -12,7 +12,8 @@ impl RankedCompanies {
         RankedCompanies{companies_list: companies}
     }
 
-    pub fn read_companies(mut self, url: &str) {
+    
+    pub fn read_companies(&mut self, url: &str) -> &mut Self {
         let res = reqwest::blocking::get(url).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
@@ -24,17 +25,24 @@ impl RankedCompanies {
                 continue;
             } 
             
-            let ticker: &str;
-            match get_ticker(&cells[0]) {
-                Ok(content) => {ticker = content;},
+            let name: String;
+            match get_name(&cells[0]) {
+                Ok(content) => {name = content.to_string();},
                 Err(_) => continue
             }
 
-            let altman: &str;
-            match get_altman_rating(&cells[2]) {
-                Ok(content) => {altman = content;},
+            let ticker: String;
+            match get_ticker(&cells[0]) {
+                Ok(content) => {ticker = content.to_string();},
                 Err(_) => continue
             }
+
+            let altman: String;
+            match get_altman_rating(&cells[2]) {
+                Ok(content) => {altman = content.to_string();},
+                Err(_) => continue
+            }
+
             let f_score: f32;
             match get_piotroski_f_score(&cells[3]) {
                 Ok(content) => {f_score = content.parse().unwrap()},
@@ -42,18 +50,34 @@ impl RankedCompanies {
             }
 
             let mut company = Company::default();
+            company.name = name;
             company.ticker = ticker.to_string();
             company.altman = altman.to_string();
             company.f_score = f_score;
 
             self.companies_list.push(company);
         } 
-        println!("{:#?}", self.companies_list)
+        self
+    }
+
+    pub fn update_indicators(self) -> (){
+        for company in self.companies_list.into_iter() {
+            let res = reqwest::blocking::get(company.get_indicators_link()).unwrap();
+            let content = res.text().unwrap();
+            let table = table_extract::Table::find_first(&content).unwrap();
+            println!("{:#?}", table);
+            panic!("")
+        }
     }
 }
 
 fn get_ticker(html: &str) -> Result<&str, &str> {
     let re = Regex::new(r">([A-Z0-9]{3})").unwrap();
+    get_regex_from_html(html, re, "Ticker not found")
+}
+
+fn get_name(html: &str) -> Result<&str, &str> {
+    let re = Regex::new(r"\(([A-Z0-9]*)\)").unwrap();
     get_regex_from_html(html, re, "Ticker not found")
 }
 
