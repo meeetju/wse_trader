@@ -1,6 +1,5 @@
-use crate::company;
-use regex::{Regex, Error, CaptureMatches};
-use serde::__private::de::Content;
+use crate::company::{self, Company};
+use regex::{Regex};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
@@ -8,31 +7,48 @@ pub struct RankedCompanies {
 }
 
 impl RankedCompanies {
-    pub fn new() -> RankedCompanies {
+    pub fn new() -> RankedCompanies  {
         let mut companies = Vec::new();
         RankedCompanies{companies_list: companies}
     }
 
-    pub fn read_companies(self, url: &str) {
+    pub fn read_companies(mut self, url: &str) {
         let res = reqwest::blocking::get(url).unwrap();
         let content = res.text().unwrap();
-        // println!("{:#?}", content);
         let table = table_extract::Table::find_first(&content).unwrap();
+
         for row in table.into_iter() {
             let cells = row.as_slice();
             
             if cells.len() != 4 {
                 continue;
             } 
-                
-            let ticker = get_ticker(&cells[0]);
-            let altman = get_altman_rating(&cells[2]);
-            let f_score = get_piotroski_f_score(&cells[3]);
-            println!("{:#?}, {:#?}, {:#?}", ticker, altman, f_score);
-            // panic!("");
             
+            let ticker: &str;
+            match get_ticker(&cells[0]) {
+                Ok(content) => {ticker = content;},
+                Err(_) => continue
+            }
+
+            let altman: &str;
+            match get_altman_rating(&cells[2]) {
+                Ok(content) => {altman = content;},
+                Err(_) => continue
+            }
+            let f_score: f32;
+            match get_piotroski_f_score(&cells[3]) {
+                Ok(content) => {f_score = content.parse().unwrap()},
+                Err(_) => continue
+            }
+
+            let mut company = Company::default();
+            company.ticker = ticker.to_string();
+            company.altman = altman.to_string();
+            company.f_score = f_score;
+
+            self.companies_list.push(company);
         } 
-        
+        println!("{:#?}", self.companies_list)
     }
 }
 
@@ -42,7 +58,7 @@ fn get_ticker(html: &str) -> Result<&str, &str> {
 }
 
 fn get_altman_rating(html: &str) -> Result<&str, &str> {
-    let re = Regex::new(r">([A-D]{1,3})(\+|\-|)</span>").unwrap();
+    let re = Regex::new(r">([A-D]{1,3}[\+\-]*)</span>").unwrap();
     get_regex_from_html(html, re, "Altman rating not found")
 }
 
