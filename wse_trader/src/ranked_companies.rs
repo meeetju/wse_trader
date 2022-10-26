@@ -12,8 +12,7 @@ impl RankedCompanies {
         RankedCompanies{companies_list: companies}
     }
 
-    
-    pub fn read_companies(&mut self, url: &str) -> &mut Self {
+    pub fn get_companies(&mut self, url: &str) -> &mut Self {
         let res = reqwest::blocking::get(url).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
@@ -60,14 +59,46 @@ impl RankedCompanies {
         self
     }
 
-    pub fn update_indicators(self) -> (){
-        for company in self.companies_list.into_iter() {
-            let res = reqwest::blocking::get(company.get_indicators_link()).unwrap();
+    pub fn update_indicators(&mut self) -> &mut Self {
+        for mut company in self.companies_list.iter_mut() {
+            let res = reqwest::blocking::get(*company.get_indicators_link()).unwrap();
             let content = res.text().unwrap();
             let table = table_extract::Table::find_first(&content).unwrap();
-            println!("{:#?}", table);
-            panic!("")
+
+            for row in table.into_iter() {
+                let cells = row.as_slice();
+
+                let pe: f32;
+                match get_float_value(&cells[1]) {
+                    Ok(content) => {pe = content.parse().unwrap();},
+                    Err(_) => continue
+                }
+
+                let roe: f32;
+                match get_float_value(&cells[1]) {
+                    Ok(content) => {roe = content.parse().unwrap();},
+                    Err(_) => continue
+                }
+
+                let p_bv: f32;
+                match get_float_value(&cells[1]) {
+                    Ok(content) => {p_bv = content.parse().unwrap();},
+                    Err(_) => continue
+                }
+
+                let p_bvg: f32;
+                match get_float_value(&cells[1]) {
+                    Ok(content) => {p_bvg = content.parse().unwrap();},
+                    Err(_) => continue
+                }
+
+                company.pe = pe;
+                company.roe = roe;
+                company.p_bv = p_bv;
+                company.p_bvg = p_bvg;
+            }
         }
+        self
     }
 }
 
@@ -91,6 +122,11 @@ fn get_piotroski_f_score(html: &str) -> Result<&str, &str> {
     get_regex_from_html(html, re, "Piotroski F-Score not found")
 }
 
+fn get_float_value(html: &str) -> Result<&str, &str> {
+    let re = Regex::new(r">([0-9]*.[0-9]*)%?</div>").unwrap();
+    get_regex_from_html(html, re, "Float value not found")
+}
+
 fn get_regex_from_html<'a>(html: &'a str, re: Regex, message: &'a str) -> Result<&'a str, &'a str> {
     let captures_collection = re.captures_iter(html).collect::<Vec<regex::Captures<'_>>>();
     match captures_collection.get(0) {
@@ -101,5 +137,68 @@ fn get_regex_from_html<'a>(html: &'a str, re: Regex, message: &'a str) -> Result
             }
         },
         None => Err(&message)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_ticker_is_extracted() {
+        let html = "<a class=\"s_tt s_tt_sname_IFC\" href=\"/rating/IFC\">IFC (IFCAPITAL)</a>";
+        let result = get_ticker(html);
+
+        assert!(result.unwrap() == "IFC", "Ticker not extracted properly: {:#?}", result);
+    }
+
+    #[test]
+    fn test_name_is_extracted() {
+        let html = "<a class=\"s_tt s_tt_sname_IFC\" href=\"/rating/IFC\">IFC (IFCAPITAL)</a>";
+        let result = get_name(html);
+
+        assert!(result.unwrap() == "IFCAPITAL", "Ticker not extracted properly: {:#?}", result);
+    }
+    
+    #[test]
+    fn test_altman_is_extracted() {
+        let html = "<span style=\"color:#03AD01\">AAA</span>";
+        let result = get_altman_rating(html);
+
+        assert!(result.unwrap() == "AAA", "Ticker not extracted properly: {:#?}", result);
+
+        let html = "<span style=\"color:#595959\">BBB+</span>";
+        let result = get_altman_rating(html);
+
+        assert!(result.unwrap() == "BBB+", "Ticker not extracted properly: {:#?}", result);
+
+        let html = "<span style=\"color:#BD2222\">B-</span>";
+        let result = get_altman_rating(html);
+
+        assert!(result.unwrap() == "B-", "Ticker not extracted properly: {:#?}", result);
+    }
+
+    #[test]
+    fn test_piotroski_is_extracted() {
+        let html = "<span style=\"color:#2D832C\">7</span>";
+        let result = get_piotroski_f_score(html);
+
+        assert!(result.unwrap() == "7", "Ticker not extracted properly: {:#?}", result);
+    }
+
+    #[test]
+    fn test_pe_is_extracted() {
+        let html = "<div class=\"field field-name-field-c-z field-type-number-decimal field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\">24.06</div></div></div>";
+        let result = get_float_value(html);
+
+        assert!(result.unwrap() == "24.06", "Ticker not extracted properly: {:#?}", result);
+    }
+
+    #[test]
+    fn test_roe_is_extracted() {
+        let html = "<div class=\"field field-name-field-roe field-type-number-decimal field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\">5.73%</div></div></div>";
+        let result = get_float_value(html);
+
+        assert!(result.unwrap() == "5.73", "Ticker not extracted properly: {:#?}", result);
     }
 }
