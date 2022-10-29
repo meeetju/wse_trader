@@ -1,15 +1,25 @@
 use crate::company::{self, Company};
+use crate::requirements::{Requirements, read_requirements};
 use regex::{Regex};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
     companies_list: Vec<company::Company>,
+    requirements: Requirements,
 }
 
 impl RankedCompanies {
     pub fn new() -> RankedCompanies  {
-        let mut companies = Vec::new();
-        RankedCompanies{companies_list: companies}
+        let companies = Vec::new();
+        let requirements = Requirements::new();
+        RankedCompanies{companies_list: companies, requirements: requirements}
+    }
+
+    pub fn update_requirements(&mut self , requirements: Requirements) -> &mut Self {
+        // println!("{:#?}", self.requirements);
+        self.requirements = requirements;
+        // println!("{:#?}", self.requirements);
+        self
     }
 
     pub fn get_companies(&mut self, url: &str) -> &mut Self {
@@ -55,15 +65,20 @@ impl RankedCompanies {
             company.f_score = f_score;
 
             self.companies_list.push(company);
+            break
         } 
         self
     }
 
     pub fn update_indicators(&mut self) -> &mut Self {
         for mut company in self.companies_list.iter_mut() {
-            let res = reqwest::blocking::get(*company.get_indicators_link()).unwrap();
+            let temp_company = company.clone();
+            let indicators_link = temp_company.get_indicators_link();
+            let res = reqwest::blocking::get(&indicators_link).unwrap();
             let content = res.text().unwrap();
             let table = table_extract::Table::find_first(&content).unwrap();
+
+            println!("Getting data from {}", &indicators_link);
 
             for row in table.into_iter() {
                 let cells = row.as_slice();
@@ -100,6 +115,16 @@ impl RankedCompanies {
         }
         self
     }
+
+    pub fn print_results(self) {
+        for company in self.companies_list.into_iter() {
+            println!("{:#?}", company);
+        }
+    }
+
+    // fn is_altman_ok(self, altman: String) -> bool {
+    //     self.requirements.
+    // }
 }
 
 fn get_ticker(html: &str) -> Result<&str, &str> {
