@@ -5,24 +5,24 @@ use toml;
 
 #[derive(Debug, Deserialize)]
 pub struct Requirements {
-    requirements: StockRequirements,
+    pub stock_requirements: StockRequirements,
 }
 
 impl Requirements {
     pub fn new() -> Requirements {
-        Requirements { requirements: StockRequirements::default() }
+        Requirements { stock_requirements: StockRequirements::default() }
     }
 }
 
 #[derive(Debug, Deserialize)]
 pub struct StockRequirements {
-    p_e_max_limit: f32,
-    roe_min_limit: f32,
-    dividend_years: Vec<String>,
-    p_bv_max_limit: f32,
-    p_bv_g_max_limit: f32,
-    ratings: Vec<String>,
-    f_score: f32,
+    pub p_e_max_limit: f32,
+    pub roe_min_limit: f32,
+    pub dividend_years: Vec<String>,
+    pub p_bv_max_limit: f32,
+    pub p_bv_g_max_limit: f32,
+    pub ratings: Vec<String>,
+    pub f_score_min_limit: f32,
 }
 
 impl Default for StockRequirements {
@@ -34,7 +34,7 @@ impl Default for StockRequirements {
             p_bv_max_limit: 100.0,
             p_bv_g_max_limit: 100.0,
             ratings: vec![],
-            f_score: 0.0,
+            f_score_min_limit: 0.0,
         } 
     }
     

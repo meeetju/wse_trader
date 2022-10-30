@@ -1,118 +1,103 @@
 use crate::company::{self, Company};
-use crate::requirements::{Requirements, read_requirements};
+use crate::requirements::{Requirements};
+use crate::results_writer;
 use regex::{Regex};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
     companies_list: Vec<company::Company>,
     requirements: Requirements,
+    url: &'static str,
 }
 
 impl RankedCompanies {
-    pub fn new() -> RankedCompanies  {
-        let companies = Vec::new();
+    pub fn new() -> Self  {
+        let companies_list = Vec::new();
         let requirements = Requirements::new();
-        RankedCompanies{companies_list: companies, requirements: requirements}
+        let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw";
+        Self {companies_list, requirements, url}
     }
 
     pub fn update_requirements(&mut self , requirements: Requirements) -> &mut Self {
-        // println!("{:#?}", self.requirements);
         self.requirements = requirements;
-        // println!("{:#?}", self.requirements);
         self
     }
 
-    pub fn get_companies(&mut self, url: &str) -> &mut Self {
-        let res = reqwest::blocking::get(url).unwrap();
+    pub fn get_companies(&mut self) -> &mut Self {
+        let res = reqwest::blocking::get(self.url).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
 
         for row in table.into_iter() {
             let cells = row.as_slice();
             
-            if cells.len() != 4 {
-                continue;
-            } 
-            
-            let name: String;
-            match get_name(&cells[0]) {
-                Ok(content) => {name = content.to_string();},
-                Err(_) => continue
-            }
-
-            let ticker: String;
-            match get_ticker(&cells[0]) {
-                Ok(content) => {ticker = content.to_string();},
-                Err(_) => continue
-            }
-
-            let altman: String;
-            match get_altman_rating(&cells[2]) {
-                Ok(content) => {altman = content.to_string();},
-                Err(_) => continue
-            }
-
-            let f_score: f32;
-            match get_piotroski_f_score(&cells[3]) {
-                Ok(content) => {f_score = content.parse().unwrap()},
-                Err(_) => continue
-            }
-
+            if !Self::is_the_row_with_data(&cells) {continue;} 
             let mut company = Company::default();
-            company.name = name;
-            company.ticker = ticker.to_string();
-            company.altman = altman.to_string();
-            company.f_score = f_score;
 
-            self.companies_list.push(company);
-            break
+            match get_name(&cells[0]) {
+                Ok(content) => {company.name = content.to_string();},
+                Err(_) => continue
+            }
+
+            match get_ticker(&cells[0]) {
+                Ok(content) => {company.ticker = content.to_string();},
+                Err(_) => continue
+            }
+
+            match get_altman_rating(&cells[2]) {
+                Ok(content) => {company.altman = content.to_string();},
+                Err(_) => continue
+            }
+
+            match get_piotroski_f_score(&cells[3]) {
+                Ok(content) => {company.f_score = content.parse().unwrap()},
+                Err(_) => continue
+            }
+
+            if self.is_altman_ok(company.altman.clone()) && self.is_piotroski_ok(company.f_score.clone()) {
+                self.companies_list.push(company);
+            }
         } 
         self
     }
 
+    fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
+
     pub fn update_indicators(&mut self) -> &mut Self {
         for mut company in self.companies_list.iter_mut() {
             let temp_company = company.clone();
-            let indicators_link = temp_company.get_indicators_link();
+            let indicators_link = temp_company.get_indicators_link().clone();
             let res = reqwest::blocking::get(&indicators_link).unwrap();
             let content = res.text().unwrap();
             let table = table_extract::Table::find_first(&content).unwrap();
 
             println!("Getting data from {}", &indicators_link);
 
-            for row in table.into_iter() {
-                let cells = row.as_slice();
+            let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
 
-                let pe: f32;
-                match get_float_value(&cells[1]) {
-                    Ok(content) => {pe = content.parse().unwrap();},
-                    Err(_) => continue
-                }
+            match get_float_value(rows[0][1].as_str()) {
+                Ok(content) => {company.pe = content.parse().unwrap();},
+                Err(_) => continue
+            }
 
-                let roe: f32;
-                match get_float_value(&cells[1]) {
-                    Ok(content) => {roe = content.parse().unwrap();},
-                    Err(_) => continue
-                }
+            match get_float_value(rows[10][1].as_str()) {
+                Ok(content) => {company.roe = content.parse().unwrap();},
+                Err(_) => continue
+            }
 
-                let p_bv: f32;
-                match get_float_value(&cells[1]) {
-                    Ok(content) => {p_bv = content.parse().unwrap();},
-                    Err(_) => continue
-                }
+            match get_float_value(rows[1][1].as_str()) {
+                Ok(content) => {company.p_bv = content.parse().unwrap();},
+                Err(_) => continue
+            }
 
-                let p_bvg: f32;
-                match get_float_value(&cells[1]) {
-                    Ok(content) => {p_bvg = content.parse().unwrap();},
-                    Err(_) => continue
-                }
-
-                company.pe = pe;
-                company.roe = roe;
-                company.p_bv = p_bv;
-                company.p_bvg = p_bvg;
+            match get_float_value(rows[2][1].as_str()) {
+                Ok(content) => {company.p_bvg = content.parse().unwrap();},
+                Err(_) => continue
             }
         }
+        let temp_companies_list = self.companies_list.clone();
+        self.companies_list = temp_companies_list.into_iter().filter(
+            |company| self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone())).collect();
         self
     }
 
@@ -122,9 +107,33 @@ impl RankedCompanies {
         }
     }
 
-    // fn is_altman_ok(self, altman: String) -> bool {
-    //     self.requirements.
-    // }
+    pub fn store_results_to_csv(self) {
+        results_writer::write(self.companies_list);
+    }
+
+    fn is_altman_ok(&self, altman: String) -> bool {
+        self.requirements.stock_requirements.ratings.contains(&altman)
+    }
+
+    fn is_piotroski_ok(&self, f_score: f32) -> bool {
+        self.requirements.stock_requirements.f_score_min_limit <= f_score
+    }
+
+    fn is_pe_ok(&self, pe: f32) -> bool {
+        self.requirements.stock_requirements.p_e_max_limit >= pe
+    }
+
+    fn is_roe_ok(&self, roe: f32) -> bool {
+        self.requirements.stock_requirements.roe_min_limit <= roe
+    }
+
+    fn is_p_bv_ok(&self, p_bv: f32) -> bool {
+        self.requirements.stock_requirements.p_bv_max_limit >= p_bv
+    }
+
+    fn is_p_bvg_ok(&self, p_bvg: f32) -> bool {
+        self.requirements.stock_requirements.p_bv_g_max_limit >= p_bvg
+    }
 }
 
 fn get_ticker(html: &str) -> Result<&str, &str> {
