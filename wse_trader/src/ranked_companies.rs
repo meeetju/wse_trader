@@ -64,6 +64,7 @@ impl RankedCompanies {
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
     pub fn update_indicators(&mut self) -> &mut Self {
+        let mut companies_after_update = vec![];    
         for mut company in self.companies_list.clone().into_iter() {
             let indicators_link = company.clone().get_indicators_link();
             let res = reqwest::blocking::get(&indicators_link).unwrap();
@@ -93,14 +94,13 @@ impl RankedCompanies {
                 Ok(content) => {company.p_bvg = content.parse().unwrap();},
                 Err(_) => continue
             }
-        }
-        let temp_companies_list = self.companies_list.clone();
-        self.companies_list = temp_companies_list.into_iter().filter(|company|
-             self.is_pe_ok(company.pe.clone()) &&
-             self.is_roe_ok(company.roe.clone()) &&
-             self.is_p_bv_ok(company.p_bv.clone()) &&
-             self.is_p_bvg_ok(company.p_bvg.clone())).collect();
 
+            if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
+                companies_after_update.push(company);
+            }
+    
+        }
+        self.companies_list = companies_after_update;
         self
     }
 
@@ -176,7 +176,6 @@ impl RankedCompanies {
         }
     }
 }
-
 
 
 // #[cfg(test)]
