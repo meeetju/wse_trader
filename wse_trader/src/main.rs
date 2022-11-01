@@ -9,6 +9,6 @@ fn main() {
     ranked.update_requirements(requirements);
     ranked.get_companies();
     ranked.update_indicators();
-    // ranked.print_results()
-    ranked.store_results_to_csv();
+    ranked.print_results();
+    // ranked.store_results_to_csv();
 }

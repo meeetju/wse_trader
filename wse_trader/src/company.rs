@@ -19,8 +19,8 @@ impl Company {
 }
 
 impl Default for Company {
-    fn default() -> Company {
-        Company { 
+    fn default() -> Self {
+        Self { 
             name: "".to_string(),
             ticker: "".to_string(),
             base_link: "https://strefainwestorow.pl/notowania/gpw/".to_string(),
