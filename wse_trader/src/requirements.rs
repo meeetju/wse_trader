@@ -1,18 +1,5 @@
 use std::vec;
-
 use serde::Deserialize;
-use toml;
-
-#[derive(Debug, Deserialize)]
-pub struct Requirements {
-    pub stock_requirements: StockRequirements,
-}
-
-impl Requirements {
-    pub fn new() -> Requirements {
-        Requirements { stock_requirements: StockRequirements::default() }
-    }
-}
 
 #[derive(Debug, Deserialize)]
 pub struct StockRequirements {
@@ -26,8 +13,8 @@ pub struct StockRequirements {
 }
 
 impl Default for StockRequirements {
-    fn default() -> StockRequirements {
-        StockRequirements {
+    fn default() -> Self {
+        Self {
             p_e_max_limit: 100.0,
             roe_min_limit: 0.0,
             dividend_years: vec![],
@@ -37,10 +24,22 @@ impl Default for StockRequirements {
             f_score_min_limit: 0.0,
         } 
     }
-    
 }
 
-pub fn read_requirements(file_path: String) -> std::io::Result<Requirements> {
-    let requirements = std::fs::read_to_string(file_path)?;
-    Ok(toml::from_str(&requirements)?)
+impl StockRequirements {
+
+    pub fn new() -> Self {
+        StockRequirements::default()
+    }
+
+    pub fn update(mut self, path: String) -> Self {
+        self = self.read_from_yaml(path);
+        self
+    }
+
+    fn read_from_yaml(self, path: String) -> Self {
+        let f = std::fs::File::open(&path).expect("Could not open file.");
+        serde_yaml::from_reader(f).expect("Could not read values.")
+    }
+
 }

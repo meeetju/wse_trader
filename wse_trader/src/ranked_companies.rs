@@ -1,30 +1,25 @@
 use crate::company::{self, Company};
-use crate::requirements::{Requirements};
+use crate::requirements::{StockRequirements};
 use crate::results_writer;
 use regex::{Regex};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
     companies_list: Vec<company::Company>,
-    requirements: Requirements,
-    url: &'static str,
+    requirements: StockRequirements,
+    url: String,
 }
 
 impl RankedCompanies {
-    pub fn new() -> Self  {
+    pub fn new(requirements: StockRequirements) -> Self  {
         let companies_list = Vec::new();
-        let requirements = Requirements::new();
-        let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw";
+        let requirements = requirements;
+        let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
         Self {companies_list, requirements, url}
     }
 
-    pub fn update_requirements(&mut self , requirements: Requirements) -> &mut Self {
-        self.requirements = requirements;
-        self
-    }
-
     pub fn get_companies(&mut self) -> &mut Self {
-        let res = reqwest::blocking::get(self.url).unwrap();
+        let res = reqwest::blocking::get(self.url.clone()).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
 
@@ -115,27 +110,27 @@ impl RankedCompanies {
     }
 
     fn is_altman_ok(&self, altman: String) -> bool {
-        self.requirements.stock_requirements.ratings.contains(&altman)
+        self.requirements.ratings.contains(&altman)
     }
 
     fn is_piotroski_ok(&self, f_score: f32) -> bool {
-        self.requirements.stock_requirements.f_score_min_limit <= f_score
+        self.requirements.f_score_min_limit <= f_score
     }
 
     fn is_pe_ok(&self, pe: f32) -> bool {
-        self.requirements.stock_requirements.p_e_max_limit >= pe
+        self.requirements.p_e_max_limit >= pe
     }
 
     fn is_roe_ok(&self, roe: f32) -> bool {
-        self.requirements.stock_requirements.roe_min_limit <= roe
+        self.requirements.roe_min_limit <= roe
     }
 
     fn is_p_bv_ok(&self, p_bv: f32) -> bool {
-        self.requirements.stock_requirements.p_bv_max_limit >= p_bv
+        self.requirements.p_bv_max_limit >= p_bv
     }
 
     fn is_p_bvg_ok(&self, p_bvg: f32) -> bool {
-        self.requirements.stock_requirements.p_bv_g_max_limit >= p_bvg
+        self.requirements.p_bv_g_max_limit >= p_bvg
     }
 
     fn get_ticker(&self, html: String) -> Result<String, String> {
