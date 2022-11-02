@@ -1,6 +1,6 @@
 use crate::company::{self, Company};
 use crate::requirements::{StockRequirements};
-use crate::results_writer;
+use crate::results_writer::{CsvWriter};
 use regex::{Regex};
 
 #[derive(Debug)]
@@ -8,14 +8,16 @@ pub struct RankedCompanies {
     companies_list: Vec<company::Company>,
     requirements: StockRequirements,
     url: String,
+    results_writer: CsvWriter
 }
 
 impl RankedCompanies {
-    pub fn new(requirements: StockRequirements) -> Self  {
+    pub fn new(requirements: StockRequirements, results_writer: CsvWriter) -> Self  {
         let companies_list = Vec::new();
         let requirements = requirements;
         let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
-        Self {companies_list, requirements, url}
+        let results_writer = results_writer;
+        Self {companies_list, requirements, url, results_writer}
     }
 
     pub fn get_companies(&mut self) -> &mut Self {
@@ -105,8 +107,8 @@ impl RankedCompanies {
         }
     }
 
-    pub fn store_results_to_csv(self) {
-        results_writer::write(self.companies_list);
+    pub fn write_results(self) {
+        self.results_writer.write(self.companies_list);
     }
 
     fn is_altman_ok(&self, altman: String) -> bool {
