@@ -1,23 +1,26 @@
 use crate::company::{self, Company};
-use crate::requirements::{StockRequirements};
-use crate::results_writer::{CsvWriter};
+use crate::requirements_reader::{self, StockRequirements};
+use crate::results_writer;
 use regex::{Regex};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
     companies_list: Vec<company::Company>,
     requirements: StockRequirements,
-    url: String,
-    results_writer: CsvWriter
+    url: String
 }
 
 impl RankedCompanies {
-    pub fn new(requirements: StockRequirements, results_writer: CsvWriter) -> Self  {
+    pub fn new() -> Self  {
         let companies_list = Vec::new();
-        let requirements = requirements;
+        let requirements = StockRequirements::default();
         let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
-        let results_writer = results_writer;
-        Self {companies_list, requirements, url, results_writer}
+        Self {companies_list, requirements, url}
+    }
+
+    pub fn update_requirements(&mut self, reader: Box<dyn requirements_reader::Read>) -> &mut Self {
+        self.requirements = reader.read();
+        self
     }
 
     pub fn get_companies(&mut self) -> &mut Self {
@@ -101,14 +104,11 @@ impl RankedCompanies {
         self
     }
 
-    pub fn print_results(self) {
-        for company in self.companies_list.into_iter() {
-            println!("{:#?}", company);
+    pub fn write_results(self, writer: Box<dyn results_writer::Output>) {
+        match writer.write(self.companies_list) {
+            Ok(_) => (),
+            Err(msg) => println!("{:#?}", msg)
         }
-    }
-
-    pub fn write_results(self) {
-        self.results_writer.write(self.companies_list);
     }
 
     fn is_altman_ok(&self, altman: String) -> bool {

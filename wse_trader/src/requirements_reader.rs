@@ -12,6 +12,10 @@ pub struct StockRequirements {
     pub f_score_min_limit: f32,
 }
 
+pub trait Read {
+    fn read(&self) -> StockRequirements;
+}
+
 impl Default for StockRequirements {
     fn default() -> Self {
         Self {
@@ -27,19 +31,19 @@ impl Default for StockRequirements {
 }
 
 impl StockRequirements {
-
     pub fn new() -> Self {
         StockRequirements::default()
     }
+}
 
-    pub fn update(mut self, path: String) -> Self {
-        self = self.read_from_yaml(path);
-        self
+pub struct YamlReader {
+    pub path: String
+}
+
+impl Read for YamlReader {
+    fn read(&self) -> StockRequirements {
+        let f = std::fs::File::open(&self.path).expect("Could not open file.");
+        let requirements: StockRequirements = serde_yaml::from_reader(f).expect("Could not read values.");
+        requirements
     }
-
-    fn read_from_yaml(self, path: String) -> Self {
-        let f = std::fs::File::open(&path).expect("Could not open file.");
-        serde_yaml::from_reader(f).expect("Could not read values.")
-    }
-
 }
