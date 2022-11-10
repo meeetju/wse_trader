@@ -2,6 +2,7 @@ use crate::company::{self, Company};
 use crate::requirements_reader::{self, StockRequirements};
 use crate::results_writer;
 use regex::{Regex};
+use std::sync::Arc;
 
 #[derive(Debug)]
 pub struct RankedCompanies {
@@ -64,44 +65,49 @@ impl RankedCompanies {
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
     pub fn update_indicators(&mut self) -> &mut Self {
-        let mut companies_after_update = vec![];    
-        for mut company in self.companies_list.clone().into_iter() {
-            let indicators_link = company.clone().get_indicators_link();
-            let res = reqwest::blocking::get(&indicators_link).unwrap();
-            let content = res.text().unwrap();
-            let table = table_extract::Table::find_first(&content).unwrap();
-
-            println!("Getting data from {}", &indicators_link);
-
-            let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
-
-            match self.get_float_value(rows[0][1].clone()) {
-                Ok(content) => {company.pe = content.parse().unwrap();},
-                Err(_) => continue
-            }
-
-            match self.get_float_value(rows[10][1].clone()) {
-                Ok(content) => {company.roe = content.parse().unwrap();},
-                Err(_) => continue
-            }
-
-            match self.get_float_value(rows[1][1].clone()) {
-                Ok(content) => {company.p_bv = content.parse().unwrap();},
-                Err(_) => continue
-            }
-
-            match self.get_float_value(rows[2][1].clone()) {
-                Ok(content) => {company.p_bvg = content.parse().unwrap();},
-                Err(_) => continue
-            }
-
-            if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
-                companies_after_update.push(company);
-            }
-    
-        }
-        self.companies_list = companies_after_update;
+        self.companies_list = self.update_indicators_async();
         self
+    }
+
+    #[tokio::main]
+    async fn update_indicators_async(&mut self) -> Vec<Company> {
+        let mut companies_after_update = vec![];
+        
+        let arc_self = Arc::new(&self);
+
+        for company in self.companies_list.clone().into_iter() {
+            let arc_self = Arc::clone(&arc_self);
+            tokio::spawn(arc_self.get_company_indicators(company, &mut companies_after_update));
+        }
+        companies_after_update
+    }
+
+    async fn get_company_indicators(&mut self, mut company: Company, companies_after_update: &mut Vec<Company>) {
+        let indicators_link = company.clone().get_indicators_link();
+        let res = reqwest::blocking::get(&indicators_link).unwrap();
+        let content = res.text().unwrap();
+        let table = table_extract::Table::find_first(&content).unwrap();
+        println!("Getting data from {}", &indicators_link);
+        let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
+        match self.get_float_value(rows[0][1].clone()) {
+            Ok(content) => {company.pe = content.parse().unwrap();},
+            Err(_) => ()
+        }
+        match self.get_float_value(rows[10][1].clone()) {
+            Ok(content) => {company.roe = content.parse().unwrap();},
+            Err(_) => ()
+        }
+        match self.get_float_value(rows[1][1].clone()) {
+            Ok(content) => {company.p_bv = content.parse().unwrap();},
+            Err(_) => ()
+        }
+        match self.get_float_value(rows[2][1].clone()) {
+            Ok(content) => {company.p_bvg = content.parse().unwrap();},
+            Err(_) => ()
+        }
+        if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
+            companies_after_update.push(company);
+        }
     }
 
     pub fn write_results(self, writer: Box<dyn results_writer::Output>) {

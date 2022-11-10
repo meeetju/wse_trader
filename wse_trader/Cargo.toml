@@ -12,4 +12,5 @@ table-extract = "0.2.2"
 reqwest = { version = "0.11", features = ["blocking"] }
 regex = "1"
 csv = "1.1.6"
+tokio = { version = "1.21.2", features = ["full"] }
 
