@@ -66,52 +66,71 @@ impl RankedCompanies {
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
     pub fn update_indicators(&mut self) -> &mut Self {
-        let companies_list = self.companies_list.clone();
-        Self::update_indicators_async(&companies_list);
-        self.companies_list = companies_list;
+        Self::update_indicators_async(&self.companies_list);
         self
     }
 
     fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>) {
-        for company in companies_list.lock().unwrap().iter_mut() {
-            let handle = std::thread::spawn(|| {
-                Self::update_company_indicators(company);
+
+        let size = companies_list.lock().unwrap().len();
+
+        print!("len is {:#?}", size);
+
+        for i in 0..size {
+
+            let list = Arc::clone(&companies_list);
+
+            let handle = std::thread::spawn(move || {
+                Self::update_company_indicators(list, i);
             });
             handle.join();
         }
     }
 
-    fn update_company_indicators(company: &mut Company){
+    fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize){
+
+        let company = &mut companies_list.lock().unwrap()[index];
+
         let indicators_link = company.clone().get_indicators_link();
         let res = reqwest::blocking::get(&indicators_link).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
         println!("Getting data from {}", &indicators_link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
-        match Self::get_float_value(rows[0][1].clone()) {
-            Ok(content) => {company.pe = content.parse().unwrap();},
-            Err(_) => ()
-        }
-        match Self::get_float_value(rows[10][1].clone()) {
-            Ok(content) => {company.roe = content.parse().unwrap();},
-            Err(_) => ()
-        }
-        match Self::get_float_value(rows[1][1].clone()) {
-            Ok(content) => {company.p_bv = content.parse().unwrap();},
-            Err(_) => ()
-        }
-        match Self::get_float_value(rows[2][1].clone()) {
-            Ok(content) => {company.p_bvg = content.parse().unwrap();},
-            Err(_) => ()
+
+        if rows.len() != 11 {
+            println!("Error parsing data for {:#?}", indicators_link );
+        } else {
+        
+            match Self::get_float_value(rows[0][1].clone()) {
+                Ok(content) => {company.pe = content.parse().unwrap();},
+                Err(_) => ()
+            }
+            match Self::get_float_value(rows[10][1].clone()) {
+                Ok(content) => {company.roe = content.parse().unwrap();},
+                Err(_) => ()
+            }
+            match Self::get_float_value(rows[1][1].clone()) {
+                Ok(content) => {company.p_bv = content.parse().unwrap();},
+                Err(_) => ()
+            }
+            match Self::get_float_value(rows[2][1].clone()) {
+                Ok(content) => {company.p_bvg = content.parse().unwrap();},
+                Err(_) => ()
+            }
         }
     }
 
-    // pub fn filter_best_companies(&mut self) -> &mut Self {
-    //     let mut companies_after_update = vec![];
-    //     if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
-    //         companies_after_update.push(company);
-    //     }
-    // }
+    pub fn filter_best_companies(&mut self) -> &mut Self {
+        let mut companies_after_update = vec![];
+        for company in self.companies_list.lock().unwrap().iter() {
+            if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
+                companies_after_update.push(company.clone());
+            }
+        }
+        self.companies_list = Arc::new(Mutex::new(companies_after_update));
+        self
+    }
 
     pub fn write_results(self, writer: Box<dyn results_writer::Output>) {
         match writer.write(self.companies_list.lock().unwrap().to_vec()) {
