@@ -3,6 +3,7 @@ mod requirements_reader;
 mod ranked_companies;
 mod results_writer;
 
+// #[tokio::main]
 fn main() {
 
     let mut ranked = ranked_companies::RankedCompanies::new();

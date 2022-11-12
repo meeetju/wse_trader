@@ -2,18 +2,19 @@ use crate::company::{self, Company};
 use crate::requirements_reader::{self, StockRequirements};
 use crate::results_writer;
 use regex::{Regex};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
+
 
 #[derive(Debug)]
 pub struct RankedCompanies {
-    companies_list: Vec<company::Company>,
+    companies_list: Arc<Mutex<Vec<company::Company>>>,
     requirements: StockRequirements,
     url: String
 }
 
 impl RankedCompanies {
     pub fn new() -> Self  {
-        let companies_list = Vec::new();
+        let companies_list = Arc::new(Mutex::new(Vec::new()));
         let requirements = StockRequirements::default();
         let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
         Self {companies_list, requirements, url}
@@ -35,28 +36,28 @@ impl RankedCompanies {
             if !Self::is_the_row_with_data(&cells) {continue;} 
             let mut company = Company::default();
 
-            match self.get_name(cells[0].clone()) {
+            match Self::get_name(cells[0].clone()) {
                 Ok(content) => {company.name = content.to_string();},
                 Err(_) => continue
             }
 
-            match self.get_ticker(cells[0].clone()) {
+            match Self::get_ticker(cells[0].clone()) {
                 Ok(content) => {company.ticker = content.to_string();},
                 Err(_) => continue
             }
 
-            match self.get_altman_rating(cells[2].clone()) {
+            match Self::get_altman_rating(cells[2].clone()) {
                 Ok(content) => {company.altman = content.to_string();},
                 Err(_) => continue
             }
 
-            match self.get_piotroski_f_score(cells[3].clone()) {
+            match Self::get_piotroski_f_score(cells[3].clone()) {
                 Ok(content) => {company.f_score = content.parse().unwrap()},
                 Err(_) => continue
             }
 
             if self.is_altman_ok(company.altman.clone()) && self.is_piotroski_ok(company.f_score.clone()) {
-                self.companies_list.push(company);
+                self.companies_list.lock().unwrap().push(company);
             }
         } 
         self
@@ -65,53 +66,55 @@ impl RankedCompanies {
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
     pub fn update_indicators(&mut self) -> &mut Self {
-        self.companies_list = self.update_indicators_async();
+        let companies_list = self.companies_list.clone();
+        Self::update_indicators_async(&companies_list);
+        self.companies_list = companies_list;
         self
     }
 
-    #[tokio::main]
-    async fn update_indicators_async(&mut self) -> Vec<Company> {
-        let mut companies_after_update = vec![];
-        
-        let arc_self = Arc::new(&self);
-
-        for company in self.companies_list.clone().into_iter() {
-            let arc_self = Arc::clone(&arc_self);
-            tokio::spawn(arc_self.get_company_indicators(company, &mut companies_after_update));
+    fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>) {
+        for company in companies_list.lock().unwrap().iter_mut() {
+            let handle = std::thread::spawn(|| {
+                Self::update_company_indicators(company);
+            });
+            handle.join();
         }
-        companies_after_update
     }
 
-    async fn get_company_indicators(&mut self, mut company: Company, companies_after_update: &mut Vec<Company>) {
+    fn update_company_indicators(company: &mut Company){
         let indicators_link = company.clone().get_indicators_link();
         let res = reqwest::blocking::get(&indicators_link).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
         println!("Getting data from {}", &indicators_link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
-        match self.get_float_value(rows[0][1].clone()) {
+        match Self::get_float_value(rows[0][1].clone()) {
             Ok(content) => {company.pe = content.parse().unwrap();},
             Err(_) => ()
         }
-        match self.get_float_value(rows[10][1].clone()) {
+        match Self::get_float_value(rows[10][1].clone()) {
             Ok(content) => {company.roe = content.parse().unwrap();},
             Err(_) => ()
         }
-        match self.get_float_value(rows[1][1].clone()) {
+        match Self::get_float_value(rows[1][1].clone()) {
             Ok(content) => {company.p_bv = content.parse().unwrap();},
             Err(_) => ()
         }
-        match self.get_float_value(rows[2][1].clone()) {
+        match Self::get_float_value(rows[2][1].clone()) {
             Ok(content) => {company.p_bvg = content.parse().unwrap();},
             Err(_) => ()
         }
-        if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
-            companies_after_update.push(company);
-        }
     }
 
+    // pub fn filter_best_companies(&mut self) -> &mut Self {
+    //     let mut companies_after_update = vec![];
+    //     if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
+    //         companies_after_update.push(company);
+    //     }
+    // }
+
     pub fn write_results(self, writer: Box<dyn results_writer::Output>) {
-        match writer.write(self.companies_list) {
+        match writer.write(self.companies_list.lock().unwrap().to_vec()) {
             Ok(_) => (),
             Err(msg) => println!("{:#?}", msg)
         }
@@ -141,32 +144,32 @@ impl RankedCompanies {
         self.requirements.p_bv_g_max_limit >= p_bvg
     }
 
-    fn get_ticker(&self, html: String) -> Result<String, String> {
+    fn get_ticker(html: String) -> Result<String, String> {
         let re = Regex::new(r">([A-Z0-9]{3})").unwrap();
-        self.get_regex_from_html(html, re, "Ticker not found".to_string())
+        Self::get_regex_from_html(html, re, "Ticker not found".to_string())
     }
     
-    fn get_name(&self, html: String) -> Result<String, String> {
+    fn get_name(html: String) -> Result<String, String> {
         let re = Regex::new(r"\(([A-Z0-9]*)\)").unwrap();
-        self.get_regex_from_html(html, re, "Ticker not found".to_string())
+        Self::get_regex_from_html(html, re, "Ticker not found".to_string())
     }
     
-    fn get_altman_rating(&self, html: String) -> Result<String, String> {
+    fn get_altman_rating(html: String) -> Result<String, String> {
         let re = Regex::new(r">([A-D]{1,3}[\+\-]*)</span>").unwrap();
-        self.get_regex_from_html(html, re, "Altman rating not found".to_string())
+        Self::get_regex_from_html(html, re, "Altman rating not found".to_string())
     }
     
-    fn get_piotroski_f_score(&self, html: String) -> Result<String, String> {
+    fn get_piotroski_f_score(html: String) -> Result<String, String> {
         let re = Regex::new(r">([0-9])</span>").unwrap();
-        self.get_regex_from_html(html, re, "Piotroski F-Score not found".to_string())
+        Self::get_regex_from_html(html, re, "Piotroski F-Score not found".to_string())
     }
     
-    fn get_float_value(&self, html: String) -> Result<String, String> {
+    fn get_float_value(html: String) -> Result<String, String> {
         let re = Regex::new(r">([0-9]*.[0-9]*)%?</div>").unwrap();
-        self.get_regex_from_html(html.clone(), re, "Float value not found".to_string())
+        Self::get_regex_from_html(html.clone(), re, "Float value not found".to_string())
     }
     
-    fn get_regex_from_html(&self, html: String, re: Regex, message: String) -> Result<String, String> {
+    fn get_regex_from_html(html: String, re: Regex, message: String) -> Result<String, String> {
         let captures_collection = re.captures_iter(&html).collect::<Vec<regex::Captures<>>>();
         match captures_collection.get(0) {
             Some(captures) => {
