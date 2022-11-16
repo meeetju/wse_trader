@@ -1,8 +1,9 @@
 use crate::company::{self, Company};
-use crate::requirements_reader::{self, StockRequirements};
-use crate::results_writer;
+use crate::requirements_reader::{self, StockRequirements, Read};
+use crate::results_writer::{self, Output};
 use regex::{Regex};
 use std::sync::{Arc, Mutex};
+use std::thread::JoinHandle;
 
 
 #[derive(Debug)]
@@ -20,7 +21,9 @@ impl RankedCompanies {
         Self {companies_list, requirements, url}
     }
 
-    pub fn update_requirements(&mut self, reader: Box<dyn requirements_reader::Read>) -> &mut Self {
+    pub fn update_requirements<T>(&mut self, reader: T) -> &mut Self
+        where T: Read,
+    {
         self.requirements = reader.read();
         self
     }
@@ -73,17 +76,19 @@ impl RankedCompanies {
     fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>) {
 
         let size = companies_list.lock().unwrap().len();
-
-        print!("len is {:#?}", size);
+        let mut handlers: Vec<JoinHandle<()>> = Vec::new();
 
         for i in 0..size {
 
             let list = Arc::clone(&companies_list);
-
             let handle = std::thread::spawn(move || {
                 Self::update_company_indicators(list, i);
             });
-            handle.join();
+            handlers.push(handle)
+        }
+
+        for handler in handlers {
+            handler.join();
         }
     }
 
@@ -132,7 +137,9 @@ impl RankedCompanies {
         self
     }
 
-    pub fn write_results(self, writer: Box<dyn results_writer::Output>) {
+    pub fn write_results<T>(self, writer: T) 
+    where T: Output,
+    {
         match writer.write(self.companies_list.lock().unwrap().to_vec()) {
             Ok(_) => (),
             Err(msg) => println!("{:#?}", msg)
@@ -203,65 +210,65 @@ impl RankedCompanies {
 }
 
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//     #[test]
-//     fn test_ticker_is_extracted() {
-//         let html = "<a class=\"s_tt s_tt_sname_IFC\" href=\"/rating/IFC\">IFC (IFCAPITAL)</a>";
-//         let result = get_ticker(html);
+    #[test]
+    fn test_ticker_is_extracted() {
+        let html = "<a class=\"s_tt s_tt_sname_IFC\" href=\"/rating/IFC\">IFC (IFCAPITAL)</a>".to_string();
+        let result = RankedCompanies::get_ticker(html);
 
-//         assert!(result.unwrap() == "IFC", "Ticker not extracted properly: {:#?}", result);
-//     }
+        assert!(result.as_ref().unwrap() == "IFC", "Ticker not extracted properly: {:#?}", result);
+    }
 
-//     #[test]
-//     fn test_name_is_extracted() {
-//         let html = "<a class=\"s_tt s_tt_sname_IFC\" href=\"/rating/IFC\">IFC (IFCAPITAL)</a>";
-//         let result = get_name(html);
+    #[test]
+    fn test_name_is_extracted() {
+        let html = "<a class=\"s_tt s_tt_sname_IFC\" href=\"/rating/IFC\">IFC (IFCAPITAL)</a>".to_string();
+        let result = RankedCompanies::get_name(html);
 
-//         assert!(result.unwrap() == "IFCAPITAL", "Ticker not extracted properly: {:#?}", result);
-//     }
+        assert!(result.as_ref().unwrap() == "IFCAPITAL", "Ticker not extracted properly: {:#?}", result);
+    }
     
-//     #[test]
-//     fn test_altman_is_extracted() {
-//         let html = "<span style=\"color:#03AD01\">AAA</span>";
-//         let result = get_altman_rating(html);
+    #[test]
+    fn test_altman_is_extracted() {
+        let html = "<span style=\"color:#03AD01\">AAA</span>".to_string();
+        let result = RankedCompanies::get_altman_rating(html);
 
-//         assert!(result.unwrap() == "AAA", "Ticker not extracted properly: {:#?}", result);
+        assert!(result.as_ref().unwrap() == "AAA", "Ticker not extracted properly: {:#?}", result);
 
-//         let html = "<span style=\"color:#595959\">BBB+</span>";
-//         let result = get_altman_rating(html);
+        let html = "<span style=\"color:#595959\">BBB+</span>".to_string();
+        let result = RankedCompanies::get_altman_rating(html);
 
-//         assert!(result.unwrap() == "BBB+", "Ticker not extracted properly: {:#?}", result);
+        assert!(result.as_ref().unwrap() == "BBB+", "Ticker not extracted properly: {:#?}", result);
 
-//         let html = "<span style=\"color:#BD2222\">B-</span>";
-//         let result = get_altman_rating(html);
+        let html = "<span style=\"color:#BD2222\">B-</span>".to_string();
+        let result = RankedCompanies::get_altman_rating(html);
 
-//         assert!(result.unwrap() == "B-", "Ticker not extracted properly: {:#?}", result);
-//     }
+        assert!(result.as_ref().unwrap() == "B-", "Ticker not extracted properly: {:#?}", result);
+    }
 
-//     #[test]
-//     fn test_piotroski_is_extracted() {
-//         let html = "<span style=\"color:#2D832C\">7</span>";
-//         let result = get_piotroski_f_score(html);
+    #[test]
+    fn test_piotroski_is_extracted() {
+        let html = "<span style=\"color:#2D832C\">7</span>".to_string();
+        let result = RankedCompanies::get_piotroski_f_score(html);
 
-//         assert!(result.unwrap() == "7", "Ticker not extracted properly: {:#?}", result);
-//     }
+        assert!(result.as_ref().unwrap() == "7", "Ticker not extracted properly: {:#?}", result);
+    }
 
-//     #[test]
-//     fn test_pe_is_extracted() {
-//         let html = "<div class=\"field field-name-field-c-z field-type-number-decimal field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\">24.06</div></div></div>";
-//         let result = get_float_value(html);
+    #[test]
+    fn test_pe_is_extracted() {
+        let html = "<div class=\"field field-name-field-c-z field-type-number-decimal field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\">24.06</div></div></div>".to_string();
+        let result = RankedCompanies::get_float_value(html);
 
-//         assert!(result.unwrap() == "24.06", "Ticker not extracted properly: {:#?}", result);
-//     }
+        assert!(result.as_ref().unwrap() == "24.06", "Ticker not extracted properly: {:#?}", result);
+    }
 
-//     #[test]
-//     fn test_roe_is_extracted() {
-//         let html = "<div class=\"field field-name-field-roe field-type-number-decimal field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\">5.73%</div></div></div>";
-//         let result = get_float_value(html);
+    #[test]
+    fn test_roe_is_extracted() {
+        let html = "<div class=\"field field-name-field-roe field-type-number-decimal field-label-hidden\"><div class=\"field-items\"><div class=\"field-item even\">5.73%</div></div></div>".to_string();
+        let result = RankedCompanies::get_float_value(html);
 
-//         assert!(result.unwrap() == "5.73", "Ticker not extracted properly: {:#?}", result);
-//     }
-// }
+        assert!(result.as_ref().unwrap() == "5.73", "Ticker not extracted properly: {:#?}", result);
+    }
+}

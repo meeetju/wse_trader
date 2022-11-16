@@ -1,4 +1,4 @@
-use crate::company::{self, Company};
+use crate::company::Company;
 use std::error::Error;
 use csv::Writer;
 use core::fmt::Debug;
