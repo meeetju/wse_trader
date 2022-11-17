@@ -1,7 +1,10 @@
 use crate::company::{self, Company};
 use crate::requirements_reader::{self, StockRequirements, Read};
 use crate::results_writer::{self, Output};
+use crate::urls_modifier::UrlsModifier;
 use regex::{Regex};
+use reqwest::Url;
+use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::thread::JoinHandle;
 
@@ -10,21 +13,28 @@ use std::thread::JoinHandle;
 pub struct RankedCompanies {
     companies_list: Arc<Mutex<Vec<company::Company>>>,
     requirements: StockRequirements,
-    url: String
+    url: String,
+    urls_mapping: HashMap<String, String>
 }
 
 impl RankedCompanies {
     pub fn new() -> Self  {
         let companies_list = Arc::new(Mutex::new(Vec::new()));
         let requirements = StockRequirements::default();
-        let url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
-        Self {companies_list, requirements, url}
+        let all_companies_url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
+        let urls_mapping = HashMap::new();
+        Self {companies_list, requirements, url: all_companies_url, urls_mapping}
     }
 
     pub fn update_requirements<T>(&mut self, reader: T) -> &mut Self
         where T: Read,
     {
         self.requirements = reader.read();
+        self
+    }
+
+    pub fn update_url_mappings(&mut self, modifier: UrlsModifier) -> &mut Self{
+        self.urls_mapping = modifier.read_map_file();
         self
     }
 
@@ -41,7 +51,10 @@ impl RankedCompanies {
 
             match Self::get_name(cells[0].clone()) {
                 Ok(content) => {company.name = content.to_string();},
-                Err(_) => continue
+                Err(_) => match Self::get_ticker(cells[0].clone()) {
+                                Ok(content) => {company.name = content.to_string();},
+                                Err(_) => continue
+                        }
             }
 
             match Self::get_ticker(cells[0].clone()) {
@@ -69,20 +82,21 @@ impl RankedCompanies {
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
     pub fn update_indicators(&mut self) -> &mut Self {
-        Self::update_indicators_async(&self.companies_list);
+        Self::update_indicators_async(&self.companies_list, self.urls_mapping.clone());
         self
     }
 
-    fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>) {
+    fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>, url_mapping: HashMap<String, String>) {
 
         let size = companies_list.lock().unwrap().len();
         let mut handlers: Vec<JoinHandle<()>> = Vec::new();
 
         for i in 0..size {
 
+            let mapping_clone = url_mapping.clone();
             let list = Arc::clone(&companies_list);
             let handle = std::thread::spawn(move || {
-                Self::update_company_indicators(list, i);
+                Self::update_company_indicators(list, i, mapping_clone);
             });
             handlers.push(handle)
         }
@@ -92,11 +106,18 @@ impl RankedCompanies {
         }
     }
 
-    fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize){
+    fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize, url_mapping: HashMap<String, String>){
 
         let company = &mut companies_list.lock().unwrap()[index];
 
-        let indicators_link = company.clone().get_indicators_link();
+        let mut indicators_link = company.clone().get_indicators_link();
+
+        for (default_url_content, replace_url_content) in url_mapping {
+            if indicators_link.contains(&default_url_content) {
+                indicators_link = indicators_link.replace(&default_url_content, &replace_url_content);
+            }
+        }
+
         let res = reqwest::blocking::get(&indicators_link).unwrap();
         let content = res.text().unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
