@@ -1,4 +1,5 @@
 mod company;
+mod lazy_regexps;
 mod requirements_reader;
 mod ranked_companies;
 mod results_writer;

@@ -1,12 +1,12 @@
 use crate::company::{self, Company};
-use crate::requirements_reader::{self, StockRequirements, Read};
-use crate::results_writer::{self, Output};
+use crate::requirements_reader::{StockRequirements, Read};
+use crate::results_writer::Output;
 use crate::urls_modifier::UrlsModifier;
-use regex::{Regex};
-use reqwest::Url;
+use crate::lazy_regexps::{RE_ALTMAN, RE_FLOAT, RE_F_SCORE, RE_NAME, RE_TICKER};
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use std::thread::JoinHandle;
+use lazy_regex;
 
 
 #[derive(Debug)]
@@ -192,31 +192,26 @@ impl RankedCompanies {
     }
 
     fn get_ticker(html: String) -> Result<String, String> {
-        let re = Regex::new(r">([A-Z0-9]{3})").unwrap();
-        Self::get_regex_from_html(html, re, "Ticker not found".to_string())
+        Self::get_regex_from_html(html, RE_TICKER, "Ticker not found".to_string())
     }
     
     fn get_name(html: String) -> Result<String, String> {
-        let re = Regex::new(r"\(([A-Z0-9]*)\)").unwrap();
-        Self::get_regex_from_html(html, re, "Ticker not found".to_string())
+        Self::get_regex_from_html(html, RE_NAME, "Ticker not found".to_string())
     }
     
     fn get_altman_rating(html: String) -> Result<String, String> {
-        let re = Regex::new(r">([A-D]{1,3}[\+\-]*)</span>").unwrap();
-        Self::get_regex_from_html(html, re, "Altman rating not found".to_string())
+        Self::get_regex_from_html(html, RE_ALTMAN, "Altman rating not found".to_string())
     }
     
     fn get_piotroski_f_score(html: String) -> Result<String, String> {
-        let re = Regex::new(r">([0-9])</span>").unwrap();
-        Self::get_regex_from_html(html, re, "Piotroski F-Score not found".to_string())
+        Self::get_regex_from_html(html, RE_F_SCORE, "Piotroski F-Score not found".to_string())
     }
     
     fn get_float_value(html: String) -> Result<String, String> {
-        let re = Regex::new(r">([0-9]*.[0-9]*)%?</div>").unwrap();
-        Self::get_regex_from_html(html.clone(), re, "Float value not found".to_string())
+        Self::get_regex_from_html(html.clone(), RE_FLOAT, "Float value not found".to_string())
     }
     
-    fn get_regex_from_html(html: String, re: Regex, message: String) -> Result<String, String> {
+    fn get_regex_from_html(html: String, re: &lazy_regex::Lazy<lazy_regex::Regex>, message: String) -> Result<String, String> {
         let captures_collection = re.captures_iter(&html).collect::<Vec<regex::Captures<>>>();
         match captures_collection.get(0) {
             Some(captures) => {
@@ -229,6 +224,8 @@ impl RankedCompanies {
         }
     }
 }
+
+
 
 
 #[cfg(test)]
