@@ -4,7 +4,8 @@ use crate::results_writer::Output;
 use crate::urls_modifier::UrlsModifier;
 use crate::lazy_regexps::{RE_ALTMAN, RE_FLOAT, RE_F_SCORE, RE_NAME, RE_TICKER};
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
+use futures::lock::Mutex;
 use std::thread::JoinHandle;
 use lazy_regex;
 
@@ -38,9 +39,10 @@ impl RankedCompanies {
         self
     }
 
-    pub fn get_companies(&mut self) -> &mut Self {
-        let res = reqwest::blocking::get(self.url.clone()).unwrap();
-        let content = res.text().unwrap();
+    pub async fn get_companies(&mut self) -> &mut Self {
+        let client = reqwest::Client::new(); 
+        let response = client.get(self.url.clone()).send().await.unwrap();
+        let content = response.text().await.unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
 
         for row in table.into_iter() {
@@ -73,7 +75,7 @@ impl RankedCompanies {
             }
 
             if self.is_altman_ok(company.altman.clone()) && self.is_piotroski_ok(company.f_score.clone()) {
-                self.companies_list.lock().unwrap().push(company);
+                self.companies_list.lock().await.push(company);
             }
         } 
         self
@@ -81,34 +83,34 @@ impl RankedCompanies {
 
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
-    pub fn update_indicators(&mut self) -> &mut Self {
-        Self::update_indicators_async(&self.companies_list, self.urls_mapping.clone());
+    pub async fn update_indicators(&mut self) -> &mut Self {
+        Self::update_indicators_async(&self.companies_list, self.urls_mapping.clone()).await;
         self
     }
 
-    fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>, url_mapping: HashMap<String, String>) {
+    async fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>, url_mapping: HashMap<String, String>) {
 
-        let size = companies_list.lock().unwrap().len();
-        let mut handlers: Vec<JoinHandle<()>> = Vec::new();
+        let size = companies_list.lock().await.len();
+        let mut handlers = Vec::new();
 
         for i in 0..size {
 
             let mapping_clone = url_mapping.clone();
             let list = Arc::clone(&companies_list);
-            let handle = std::thread::spawn(move || {
-                Self::update_company_indicators(list, i, mapping_clone);
+            let handle = tokio::spawn(async move {
+                Self::update_company_indicators(list, i, mapping_clone).await;
             });
             handlers.push(handle)
         }
 
         for handler in handlers {
-            handler.join();
+            handler.await.unwrap();
         }
     }
 
-    fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize, url_mapping: HashMap<String, String>){
+    async fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize, url_mapping: HashMap<String, String>){
 
-        let company = &mut companies_list.lock().unwrap()[index];
+        let company = &mut companies_list.lock().await[index];
 
         let mut indicators_link = company.clone().get_indicators_link();
 
@@ -118,8 +120,10 @@ impl RankedCompanies {
             }
         }
 
-        let res = reqwest::blocking::get(&indicators_link).unwrap();
-        let content = res.text().unwrap();
+        let client = reqwest::Client::new(); 
+
+        let response = client.get(&indicators_link).send().await.unwrap();
+        let content = response.text().await.unwrap();
         let table = table_extract::Table::find_first(&content).unwrap();
         println!("Getting data from {}", &indicators_link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
@@ -147,9 +151,9 @@ impl RankedCompanies {
         }
     }
 
-    pub fn filter_best_companies(&mut self) -> &mut Self {
+    pub async fn filter_best_companies(&mut self) -> &mut Self {
         let mut companies_after_update = vec![];
-        for company in self.companies_list.lock().unwrap().iter() {
+        for company in self.companies_list.lock().await.iter() {
             if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
                 companies_after_update.push(company.clone());
             }
@@ -158,10 +162,10 @@ impl RankedCompanies {
         self
     }
 
-    pub fn write_results<T>(self, writer: T) 
+    pub async fn write_results<T>(self, writer: T) 
     where T: Output,
     {
-        match writer.write(self.companies_list.lock().unwrap().to_vec()) {
+        match writer.write(self.companies_list.lock().await.to_vec()) {
             Ok(_) => (),
             Err(msg) => println!("{:#?}", msg)
         }

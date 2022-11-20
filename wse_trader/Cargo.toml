@@ -16,4 +16,4 @@ csv = "1.1.6"
 tokio = { version = "1.21.2", features = ["full"] }
 lazy_static = "1.4.0"
 lazy-regex = "2.3.1"
-
+futures = "0.3.25"
