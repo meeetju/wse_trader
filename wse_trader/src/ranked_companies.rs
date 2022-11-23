@@ -3,52 +3,48 @@ use crate::requirements_reader::{StockRequirements, Read};
 use crate::results_writer::Output;
 use crate::urls_modifier::UrlsModifier;
 use crate::lazy_regexps::{RE_ALTMAN, RE_FLOAT, RE_F_SCORE, RE_NAME, RE_TICKER};
-use std::collections::HashMap;
 use std::sync::Arc;
 use futures::lock::Mutex;
-use std::thread::JoinHandle;
-use lazy_regex;
-
 
 #[derive(Debug)]
 pub struct RankedCompanies {
     companies_list: Arc<Mutex<Vec<company::Company>>>,
     requirements: StockRequirements,
     url: String,
-    urls_mapping: HashMap<String, String>
+    urls_modifier: UrlsModifier
 }
 
 impl RankedCompanies {
     pub fn new() -> Self  {
-        let companies_list = Arc::new(Mutex::new(Vec::new()));
-        let requirements = StockRequirements::default();
-        let all_companies_url = "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string();
-        let urls_mapping = HashMap::new();
-        Self {companies_list, requirements, url: all_companies_url, urls_mapping}
+        Self {
+            companies_list: Arc::new(Mutex::new(Vec::new())),
+            requirements: StockRequirements::default(),
+            url: "https://www.biznesradar.pl/spolki-rating/akcje_gpw".to_string(),
+            urls_modifier: UrlsModifier::default()
+        }
     }
 
-    pub fn update_requirements<T>(&mut self, reader: T) -> &mut Self
+    pub fn update_requirements<T>(&mut self, reader: T)
         where T: Read,
     {
         self.requirements = reader.read();
-        self
     }
 
-    pub fn update_url_mappings(&mut self, modifier: UrlsModifier) -> &mut Self{
-        self.urls_mapping = modifier.read_map_file();
-        self
+    pub fn update_url_mappings(&mut self, modifier: UrlsModifier) {
+        self.urls_modifier = modifier;
     }
 
-    pub async fn get_companies(&mut self) -> &mut Self {
+    pub async fn get_companies(&mut self) {
         let client = reqwest::Client::new(); 
         let response = client.get(self.url.clone()).send().await.unwrap();
         let content = response.text().await.unwrap();
+        
         let table = table_extract::Table::find_first(&content).unwrap();
 
         for row in table.into_iter() {
             let cells = row.as_slice();
             
-            if !Self::is_the_row_with_data(&cells) {continue;} 
+            if !Self::is_the_row_with_data(cells) {continue;} 
             let mut company = Company::default();
 
             match Self::get_name(cells[0].clone()) {
@@ -74,31 +70,29 @@ impl RankedCompanies {
                 Err(_) => continue
             }
 
-            if self.is_altman_ok(company.altman.clone()) && self.is_piotroski_ok(company.f_score.clone()) {
+            if self.is_altman_ok(&company.altman) && self.is_piotroski_ok(company.f_score) {
                 self.companies_list.lock().await.push(company);
             }
         } 
-        self
     }
 
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
-    pub async fn update_indicators(&mut self) -> &mut Self {
-        Self::update_indicators_async(&self.companies_list, self.urls_mapping.clone()).await;
-        self
+    pub async fn update_indicators(&mut self) {
+        Self::update_indicators_async(&self.companies_list, self.urls_modifier.clone()).await;
     }
 
-    async fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>, url_mapping: HashMap<String, String>) {
+    async fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>, modifier: UrlsModifier) {
 
         let size = companies_list.lock().await.len();
         let mut handlers = Vec::new();
 
         for i in 0..size {
 
-            let mapping_clone = url_mapping.clone();
-            let list = Arc::clone(&companies_list);
+            let modifier = modifier.clone();
+            let list = Arc::clone(companies_list);
             let handle = tokio::spawn(async move {
-                Self::update_company_indicators(list, i, mapping_clone).await;
+                Self::update_company_indicators(list, i, modifier).await;
             });
             handlers.push(handle)
         }
@@ -108,22 +102,17 @@ impl RankedCompanies {
         }
     }
 
-    async fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize, url_mapping: HashMap<String, String>){
+    async fn update_company_indicators(companies_list: Arc<Mutex<Vec<company::Company>>>, index: usize, modifier: UrlsModifier){
 
         let company = &mut companies_list.lock().await[index];
 
         let mut indicators_link = company.clone().get_indicators_link();
-
-        for (default_url_content, replace_url_content) in url_mapping {
-            if indicators_link.contains(&default_url_content) {
-                indicators_link = indicators_link.replace(&default_url_content, &replace_url_content);
-            }
-        }
+        indicators_link = modifier.modify(indicators_link);
 
         let client = reqwest::Client::new(); 
-
         let response = client.get(&indicators_link).send().await.unwrap();
         let content = response.text().await.unwrap();
+
         let table = table_extract::Table::find_first(&content).unwrap();
         println!("Getting data from {}", &indicators_link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
@@ -131,35 +120,21 @@ impl RankedCompanies {
         if rows.len() != 11 {
             println!("Error parsing data for {:#?}", indicators_link );
         } else {
-        
-            match Self::get_float_value(rows[0][1].clone()) {
-                Ok(content) => {company.pe = content.parse().unwrap();},
-                Err(_) => ()
-            }
-            match Self::get_float_value(rows[10][1].clone()) {
-                Ok(content) => {company.roe = content.parse().unwrap();},
-                Err(_) => ()
-            }
-            match Self::get_float_value(rows[1][1].clone()) {
-                Ok(content) => {company.p_bv = content.parse().unwrap();},
-                Err(_) => ()
-            }
-            match Self::get_float_value(rows[2][1].clone()) {
-                Ok(content) => {company.p_bvg = content.parse().unwrap();},
-                Err(_) => ()
-            }
+            if let Ok(content) = Self::get_float_value(rows[0][1].clone()) {company.pe = content.parse().unwrap();}
+            if let Ok(content) = Self::get_float_value(rows[10][1].clone()) {company.roe = content.parse().unwrap();}
+            if let Ok(content) = Self::get_float_value(rows[1][1].clone()) {company.p_bv = content.parse().unwrap();}
+            if let Ok(content) = Self::get_float_value(rows[2][1].clone()) {company.p_bvg = content.parse().unwrap();}
         }
     }
 
-    pub async fn filter_best_companies(&mut self) -> &mut Self {
+    pub async fn filter_best_companies(&mut self) {
         let mut companies_after_update = vec![];
         for company in self.companies_list.lock().await.iter() {
-            if self.is_pe_ok(company.pe.clone()) && self.is_roe_ok(company.roe.clone()) && self.is_p_bv_ok(company.p_bv.clone()) && self.is_p_bvg_ok(company.p_bvg.clone()) {
+            if self.is_pe_ok(company.pe) && self.is_roe_ok(company.roe) && self.is_p_bv_ok(company.p_bv) && self.is_p_bvg_ok(company.p_bvg) {
                 companies_after_update.push(company.clone());
             }
         }
         self.companies_list = Arc::new(Mutex::new(companies_after_update));
-        self
     }
 
     pub async fn write_results<T>(self, writer: T) 
@@ -171,8 +146,8 @@ impl RankedCompanies {
         }
     }
 
-    fn is_altman_ok(&self, altman: String) -> bool {
-        self.requirements.ratings.contains(&altman)
+    fn is_altman_ok(&self, altman: &String) -> bool {
+        self.requirements.ratings.contains(altman)
     }
 
     fn is_piotroski_ok(&self, f_score: f32) -> bool {
@@ -200,7 +175,7 @@ impl RankedCompanies {
     }
     
     fn get_name(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html, RE_NAME, "Ticker not found".to_string())
+        Self::get_regex_from_html(html, RE_NAME, "Name not found".to_string())
     }
     
     fn get_altman_rating(html: String) -> Result<String, String> {
@@ -212,7 +187,7 @@ impl RankedCompanies {
     }
     
     fn get_float_value(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html.clone(), RE_FLOAT, "Float value not found".to_string())
+        Self::get_regex_from_html(html, RE_FLOAT, "Float value not found".to_string())
     }
     
     fn get_regex_from_html(html: String, re: &lazy_regex::Lazy<lazy_regex::Regex>, message: String) -> Result<String, String> {
@@ -228,9 +203,6 @@ impl RankedCompanies {
         }
     }
 }
-
-
-
 
 #[cfg(test)]
 mod tests {

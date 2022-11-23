@@ -1,7 +1,6 @@
 use std::collections::HashMap;
-use serde_any;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Default)]
 pub struct UrlsModifier {
     pub path: String,
     map: HashMap<String, String>
@@ -10,13 +9,17 @@ pub struct UrlsModifier {
 impl UrlsModifier {
     pub fn new(path: String) -> Self {
         Self {
-            path,
-            map: HashMap::new(),
+            path: path.clone(),
+            map: serde_any::from_file(&path).expect(&format!("Could not read from file {}", &path))
         }
     }
-    pub fn read_map_file(self) -> HashMap<String, String> {
-        let map = serde_any::from_file(self.path).unwrap();
-        map
+    pub fn modify(self, input_url: String) -> String {
+        for (default_url_content, replace_url_content) in self.map {
+            if input_url.contains(&default_url_content) {
+                return input_url.replace(&default_url_content, &replace_url_content);
+            }
+        }
+        input_url
     }
 
 }

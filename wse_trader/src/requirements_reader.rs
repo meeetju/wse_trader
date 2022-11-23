@@ -30,12 +30,6 @@ impl Default for StockRequirements {
     }
 }
 
-impl StockRequirements {
-    pub fn new() -> Self {
-        StockRequirements::default()
-    }
-}
-
 pub struct YamlReader {
     pub path: String
 }
