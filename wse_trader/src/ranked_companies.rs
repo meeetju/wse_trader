@@ -3,8 +3,10 @@ use crate::requirements_reader::{StockRequirements, Read};
 use crate::results_writer::Output;
 use crate::urls_modifier::UrlsModifier;
 use crate::lazy_regexps::{RE_ALTMAN, RE_FLOAT, RE_F_SCORE, RE_NAME, RE_TICKER};
+use crate::errors::NotFoundError;
 use std::sync::Arc;
 use futures::lock::Mutex;
+use colored::Colorize;
 
 #[derive(Debug)]
 pub struct RankedCompanies {
@@ -117,14 +119,30 @@ impl RankedCompanies {
         println!("Getting data from {}", &indicators_link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
 
-        if rows.len() != 11 {
-            println!("Error parsing data for {:#?}", indicators_link );
-        } else {
-            if let Ok(content) = Self::get_float_value(rows[0][1].clone()) {company.pe = content.parse().unwrap();}
-            if let Ok(content) = Self::get_float_value(rows[10][1].clone()) {company.roe = content.parse().unwrap();}
-            if let Ok(content) = Self::get_float_value(rows[1][1].clone()) {company.p_bv = content.parse().unwrap();}
-            if let Ok(content) = Self::get_float_value(rows[2][1].clone()) {company.p_bvg = content.parse().unwrap();}
+        match rows.len() {
+            11 => {
+                if let Ok(content) = Self::get_float_value(rows[0][1].clone()) {company.pe = content.parse().unwrap();}
+                if let Ok(content) = Self::get_float_value(rows[10][1].clone()) {company.roe = content.parse().unwrap();}
+                if let Ok(content) = Self::get_float_value(rows[1][1].clone()) {company.p_bv = content.parse().unwrap();}
+                if let Ok(content) = Self::get_float_value(rows[2][1].clone()) {company.p_bvg = content.parse().unwrap();}
+            },
+            _ => {
+                let warning = format!("{}" , NotFoundError::WrongLinkError(indicators_link)).yellow();
+                println!("{}", warning);
+            ()
         }
+
+        }
+
+        // if rows.len() != 11 {
+        //     // println!("Error parsing data for {:#?}", indicators_link );
+        //     Err(NotFoundError::WrongLinkError(indicators_link));
+        // } else {
+        //     if let Ok(content) = Self::get_float_value(rows[0][1].clone()) {company.pe = content.parse().unwrap();}
+        //     if let Ok(content) = Self::get_float_value(rows[10][1].clone()) {company.roe = content.parse().unwrap();}
+        //     if let Ok(content) = Self::get_float_value(rows[1][1].clone()) {company.p_bv = content.parse().unwrap();}
+        //     if let Ok(content) = Self::get_float_value(rows[2][1].clone()) {company.p_bvg = content.parse().unwrap();}
+        // }
     }
 
     pub async fn filter_best_companies(&mut self) {
@@ -170,36 +188,36 @@ impl RankedCompanies {
         self.requirements.p_bv_g_max_limit >= p_bvg
     }
 
-    fn get_ticker(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html, RE_TICKER, "Ticker not found".to_string())
+    fn get_ticker(html: String) -> Result<String, NotFoundError> {
+        Self::get_regex_from_html(html, RE_TICKER, NotFoundError::TickerError())
     }
     
-    fn get_name(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html, RE_NAME, "Name not found".to_string())
+    fn get_name(html: String) -> Result<String, NotFoundError> {
+        Self::get_regex_from_html(html, RE_NAME, NotFoundError::NameError())
     }
     
-    fn get_altman_rating(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html, RE_ALTMAN, "Altman rating not found".to_string())
+    fn get_altman_rating(html: String) -> Result<String, NotFoundError> {
+        Self::get_regex_from_html(html, RE_ALTMAN, NotFoundError::AltmanError())
     }
     
-    fn get_piotroski_f_score(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html, RE_F_SCORE, "Piotroski F-Score not found".to_string())
+    fn get_piotroski_f_score(html: String) -> Result<String, NotFoundError> {
+        Self::get_regex_from_html(html, RE_F_SCORE, NotFoundError::FScoreError())
     }
     
-    fn get_float_value(html: String) -> Result<String, String> {
-        Self::get_regex_from_html(html, RE_FLOAT, "Float value not found".to_string())
+    fn get_float_value(html: String) -> Result<String, NotFoundError> {
+        Self::get_regex_from_html(html, RE_FLOAT, NotFoundError::FloatError())
     }
     
-    fn get_regex_from_html(html: String, re: &lazy_regex::Lazy<lazy_regex::Regex>, message: String) -> Result<String, String> {
+    fn get_regex_from_html(html: String, re: &lazy_regex::Lazy<lazy_regex::Regex>, error: NotFoundError) -> Result<String,  NotFoundError> {
         let captures_collection = re.captures_iter(&html).collect::<Vec<regex::Captures<>>>();
         match captures_collection.get(0) {
             Some(captures) => {
                 match captures.get(1) {
                     Some(content) => Ok(html[content.start()..content.end()].to_string()),
-                    None => Err(message)
+                    None =>  Err(error)
                 }
             },
-            None => Err(message)
+            None => Err(error)
         }
     }
 }

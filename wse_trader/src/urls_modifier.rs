@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use colored::Colorize;
 
 #[derive(Debug, Clone, Default)]
 pub struct UrlsModifier {
@@ -16,6 +17,7 @@ impl UrlsModifier {
     pub fn modify(self, input_url: String) -> String {
         for (default_url_content, replace_url_content) in self.map {
             if input_url.contains(&default_url_content) {
+                println!("Modify link content {} -> {}, based on links_mapping.yaml", &default_url_content.red(), &replace_url_content.green());
                 return input_url.replace(&default_url_content, &replace_url_content);
             }
         }
