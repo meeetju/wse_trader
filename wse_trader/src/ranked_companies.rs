@@ -127,6 +127,8 @@ impl RankedCompanies {
                 if let Ok(content) = Self::get_float_value(rows[2][1].clone()) {company.p_bvg = content.parse().unwrap();}
             },
             _ => {
+                // In case the URL does not consist of expected structure of data, inform the user
+                // that the link is incorrect and requires adding a mapping in the links_mappling.yaml
                 let warning = format!("{}" , NotFoundError::WrongLinkError(indicators_link)).yellow();
                 warn!("{}", warning);
             }
