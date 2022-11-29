@@ -11,7 +11,7 @@ use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 use crate::ranked_companies::RankedCompanies;
 use crate::requirements_reader::YamlReader;
-use crate::results_writer::{CsvWriter, ConsolePrinter};
+use crate::results_writer::{CsvWriter, ConsolePrinter, JsonWriter};
 use crate::urls_modifier::UrlsModifier;
 
 #[actix_web::main]
@@ -43,11 +43,11 @@ async fn echo(req_body: String) -> impl Responder {
 }
 
 async fn search_comanies() -> impl Responder {
-    backend().await;
-    HttpResponse::Ok().body("Hey there!")
+    let content = backend().await;
+    HttpResponse::Ok().body(content)
 }
 
-async fn backend() {
+async fn backend() -> String {
 
     let mut ranked = RankedCompanies::new();
     ranked.update_requirements(YamlReader{path: "requirements.yaml".to_string()});
@@ -56,6 +56,7 @@ async fn backend() {
     ranked.update_indicators().await;
     ranked.filter_best_companies().await;
     // ranked.write_results(CsvWriter{path: "results.csv".to_string()}).await;
-    ranked.write_results(ConsolePrinter{}).await;
-
+    // ranked.write_results(ConsolePrinter{}).await;
+    let content = ranked.write_results(JsonWriter{}).await;
+    content
 }

@@ -146,13 +146,15 @@ impl RankedCompanies {
         self.companies_list = Arc::new(Mutex::new(companies_after_update));
     }
 
-    pub async fn write_results<T>(self, writer: T) 
+    pub async fn write_results<T>(self, writer: T) -> String
     where T: Output,
     {
+        let mut out = "Something went wrong".to_string();
         match writer.write(self.companies_list.lock().await.to_vec()) {
-            Ok(_) => (),
+            Ok(content) => out = content,
             Err(msg) => println!("{:#?}", msg)
         }
+        out
     }
 
     fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
