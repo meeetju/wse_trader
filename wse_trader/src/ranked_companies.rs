@@ -4,9 +4,11 @@ use crate::results_writer::Output;
 use crate::urls_modifier::UrlsModifier;
 use crate::lazy_regexps::{RE_ALTMAN, RE_FLOAT, RE_F_SCORE, RE_NAME, RE_TICKER};
 use crate::errors::NotFoundError;
+
 use std::sync::Arc;
 use futures::lock::Mutex;
 use colored::Colorize;
+use log::{info, warn};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
@@ -78,8 +80,6 @@ impl RankedCompanies {
         } 
     }
 
-    fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
-
     pub async fn update_indicators(&mut self) {
         Self::update_indicators_async(&self.companies_list, self.urls_modifier.clone()).await;
     }
@@ -116,7 +116,7 @@ impl RankedCompanies {
         let content = response.text().await.unwrap();
 
         let table = table_extract::Table::find_first(&content).unwrap();
-        println!("Getting data from {}", &indicators_link);
+        info!("Getting data from {}", &indicators_link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
 
         match rows.len() {
@@ -128,21 +128,10 @@ impl RankedCompanies {
             },
             _ => {
                 let warning = format!("{}" , NotFoundError::WrongLinkError(indicators_link)).yellow();
-                println!("{}", warning);
-            ()
-        }
+                warn!("{}", warning);
+            }
 
         }
-
-        // if rows.len() != 11 {
-        //     // println!("Error parsing data for {:#?}", indicators_link );
-        //     Err(NotFoundError::WrongLinkError(indicators_link));
-        // } else {
-        //     if let Ok(content) = Self::get_float_value(rows[0][1].clone()) {company.pe = content.parse().unwrap();}
-        //     if let Ok(content) = Self::get_float_value(rows[10][1].clone()) {company.roe = content.parse().unwrap();}
-        //     if let Ok(content) = Self::get_float_value(rows[1][1].clone()) {company.p_bv = content.parse().unwrap();}
-        //     if let Ok(content) = Self::get_float_value(rows[2][1].clone()) {company.p_bvg = content.parse().unwrap();}
-        // }
     }
 
     pub async fn filter_best_companies(&mut self) {
@@ -163,6 +152,8 @@ impl RankedCompanies {
             Err(msg) => println!("{:#?}", msg)
         }
     }
+
+    fn is_the_row_with_data(cells: &[String]) -> bool {cells.len() == 4}
 
     fn is_altman_ok(&self, altman: &String) -> bool {
         self.requirements.ratings.contains(altman)
