@@ -1,5 +1,5 @@
 #[derive(Clone, Debug)]
-pub struct Company{
+pub struct Company {
     pub name: String,
     pub ticker: String,
     base_link: String,
@@ -9,18 +9,21 @@ pub struct Company{
     pub roe: f32,
     pub p_bv: f32,
     pub p_bvg: f32,
-    pub dividend_years: Vec<String>, 
+    pub dividend_years: Vec<String>,
 }
 
 impl Company {
     pub fn get_indicators_link(self) -> String {
-        format!("{}{}-{}/wskazniki-finansowe", self.base_link, self.name, self.ticker)
+        format!(
+            "{}{}-{}/wskazniki-finansowe",
+            self.base_link, self.name, self.ticker
+        )
     }
 }
 
 impl Default for Company {
     fn default() -> Self {
-        Self { 
+        Self {
             name: "".to_string(),
             ticker: "".to_string(),
             base_link: "https://strefainwestorow.pl/notowania/gpw/".to_string(),

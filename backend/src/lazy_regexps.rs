@@ -1,4 +1,4 @@
-use lazy_regex::{Lazy, Regex, regex};
+use lazy_regex::{regex, Lazy, Regex};
 
 pub static RE_TICKER: &Lazy<Regex> = regex!(r">([A-Z0-9]{3})");
 pub static RE_NAME: &Lazy<Regex> = regex!(r"\(([A-Z0-9]*)\)");

@@ -1,5 +1,5 @@
-use std::vec;
 use serde::Deserialize;
+use std::vec;
 
 #[derive(Debug, Deserialize)]
 pub struct StockRequirements {
@@ -26,18 +26,19 @@ impl Default for StockRequirements {
             p_bv_g_max_limit: 100.0,
             ratings: vec![],
             f_score_min_limit: 0.0,
-        } 
+        }
     }
 }
 
 pub struct YamlReader {
-    pub path: String
+    pub path: String,
 }
 
 impl Read for YamlReader {
     fn read(&self) -> StockRequirements {
         let f = std::fs::File::open(&self.path).expect("Could not open file.");
-        let requirements: StockRequirements = serde_yaml::from_reader(f).expect("Could not read values.");
+        let requirements: StockRequirements =
+            serde_yaml::from_reader(f).expect("Could not read values.");
         requirements
     }
 }
