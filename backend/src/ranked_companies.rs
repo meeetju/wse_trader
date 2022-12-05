@@ -9,6 +9,7 @@ use colored::Colorize;
 use futures::lock::Mutex;
 use log::{info, warn};
 use std::sync::Arc;
+use actix_web::{FromRequest, HttpRequest};
 
 #[derive(Debug)]
 pub struct RankedCompanies {
@@ -245,6 +246,20 @@ impl RankedCompanies {
         }
     }
 }
+
+// impl FromRequest for RankedCompanies {
+//     type Error = actix_web::Error;
+//     type Future = futures::future::Ready<Result<Self, Self::Error>>;
+
+//     fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
+//         match req.extensions().get::<User>() {
+//             Some(user) => return ok(user.clone()),
+//             None => return err(actix_web::error::ErrorBadRequest("ups..."))
+//         };
+//     }
+
+// }
+
 
 #[cfg(test)]
 mod tests {
