@@ -1,7 +1,7 @@
 use serde::Deserialize;
 use std::vec;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct StockRequirements {
     pub p_e_max_limit: f32,
     pub roe_min_limit: f32,

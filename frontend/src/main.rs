@@ -8,25 +8,34 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
 
     HttpServer::new(|| {
-        App::new().service(hello).service(echo)
+        App::new()
+        .service(new_search)
+        .service(set_requirements)
+        .service(get_companies)
         // .route("/search", web::get().to(search_comanies))
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("127.0.0.1", 8090))?
     .run()
     .await
 }
 
 #[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+async fn new_search() -> impl Responder {
+    let response = reqwest::get("http://127.0.0.1:8080/new").await.unwrap().text().await;
+    println!("{:?}", response);
+    HttpResponse::Ok().body("New Search OK!")
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
+#[get("/set_requirements")]
+async fn set_requirements() -> impl Responder {
+    let response = reqwest::get("http://127.0.0.1:8080/requirements").await.unwrap().text().await;
+    println!("{:?}", response);
+    HttpResponse::Ok().body("Requirements set OK!")
 }
 
-// async fn search_comanies() -> impl Responder {
-//     let content = backend().await;
-//     HttpResponse::Ok().body(content)
-// }
+#[get("/get_companies")]
+async fn get_companies() -> impl Responder {
+    let response = reqwest::get("http://127.0.0.1:8080/companies").await.unwrap().text().await;
+    println!("{:?}", response);
+    HttpResponse::Ok().body("Best companies received OK!")
+}

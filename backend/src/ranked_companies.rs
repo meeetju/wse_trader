@@ -11,7 +11,7 @@ use log::{info, warn};
 use std::sync::Arc;
 use actix_web::{FromRequest, HttpRequest};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RankedCompanies {
     companies_list: Arc<Mutex<Vec<company::Company>>>,
     requirements: StockRequirements,
@@ -29,11 +29,17 @@ impl RankedCompanies {
         }
     }
 
+    pub fn clear(&mut self) {
+        self.companies_list = Arc::new(Mutex::new(Vec::new()));
+        self.requirements = StockRequirements::default();
+    }
+
     pub fn update_requirements<T>(&mut self, reader: T)
     where
         T: Read,
     {
         self.requirements = reader.read();
+        info!("Requirements updated");
     }
 
     pub fn update_url_mappings(&mut self, modifier: UrlsModifier) {
@@ -174,7 +180,7 @@ impl RankedCompanies {
         self.companies_list = Arc::new(Mutex::new(companies_after_update));
     }
 
-    pub async fn write_results<T>(self, writer: T) -> T::Out
+    pub async fn write_results<T>(&self, writer: T) -> T::Out
     where
         T: Output,
     {
