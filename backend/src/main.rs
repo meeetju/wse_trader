@@ -54,10 +54,11 @@ async fn best_companies(ranked: web::Data<Arc<Mutex<RankedCompanies>>>) -> impl 
     ranked.lock().await.get_companies().await;
     ranked.lock().await.update_indicators().await;
     ranked.lock().await.filter_best_companies().await;
-    println!("{}", ranked.lock().await.write_results(JsonWriter {}).await);
     // ranked.lock().await.write_results(ConsolePrinter{}).await;
+    let companies = ranked.lock().await.write_results(JsonWriter {}).await;
+    println!("{}", &companies);
 
-    HttpResponse::Ok().body("Best companies received!")
+    HttpResponse::Ok().body(companies)
 }
 
     // let mut ranked = RankedCompanies::new();

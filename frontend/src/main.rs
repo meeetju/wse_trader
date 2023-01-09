@@ -1,6 +1,9 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use env_logger;
-use std::env;
+use core::panic;
+use std::{env, process::CommandArgs};
+use std::collections::HashMap;
+
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -12,7 +15,6 @@ async fn main() -> std::io::Result<()> {
         .service(new_search)
         .service(set_requirements)
         .service(get_companies)
-        // .route("/search", web::get().to(search_comanies))
     })
     .bind(("127.0.0.1", 8090))?
     .run()
@@ -36,6 +38,66 @@ async fn set_requirements() -> impl Responder {
 #[get("/get_companies")]
 async fn get_companies() -> impl Responder {
     let response = reqwest::get("http://127.0.0.1:8080/companies").await.unwrap().text().await;
-    println!("{:?}", response);
-    HttpResponse::Ok().body("Best companies received OK!")
+    println!("{:?}", &response);
+    let mut result = String::new();
+
+    let companies = match response {
+        Ok(content) => content,
+        Err(_) => "".to_string()
+    };
+
+    if companies.is_empty() {
+        panic!("Something went wrong!")
+    }
+
+    result += "
+    <!DOCTYPE html>
+    <html>
+    <style>
+    table, th, td {
+      border:1px solid black;
+      border-collapse: collapse;
+    }
+    </style>
+    <body>
+    
+    <h2>Best Warsaw Stock Exchange listed companies</h2>
+    ";
+    result += "<table style='width:100%'>";
+    
+
+    let companies_json: Vec<HashMap<String, String>> = serde_json::from_str(&companies).unwrap();
+
+    let headers: Vec<String> = vec![
+        "name".to_string(), 
+        "ticker".to_string(), 
+        "altman".to_string(), 
+        "piotroski".to_string(), 
+        "pe".to_string(), 
+        "roe".to_string(), 
+        "p_bv".to_string(), 
+        "p_bvg".to_string()
+        ];
+
+    result += "<tr>";
+    for header in headers.clone() {
+        result += "<td>";
+        result += &header;
+        result += "</td>";
+    }
+    result += "</tr>";
+
+    for company in companies_json {
+        result += "<tr>";
+        for header in headers.clone() {
+            result += "<td>";
+            result += company.get(&header).unwrap();
+            result += "</td>";
+        }
+        result += "</tr>";
+    }
+
+    result += "</table>";
+
+    HttpResponse::Ok().content_type("text/html").body(result)
 }
