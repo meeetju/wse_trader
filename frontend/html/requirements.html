@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Set limits for searched Warsaw Stock Exchange stocks</h2>
+
+<form action="/set_requirements" method="post">
+  <label for="altman">Altman values - coma separated:</label><br>
+  <input type="text" id="altan" name="altman" value="AAA, AA+, AA, AA-, A+, A, A-, BBB+, BBB, BBB-, BB+, BB"><br><br>
+  <label for="piotroski">Minimal Piotroski f-score:</label><br>
+  <input type="text" id="piotroski" name="piotroski" value="7"><br><br>
+  <label for="pe">Maximal P/E:</label><br>
+  <input type="text" id="pe" name="pe" value="15.0"><br><br>
+  <label for="roe">Minimal ROE:</label><br>
+  <input type="text" id="roe" name="roe" value="15.0"><br><br>
+  <label for="p_bv">Maximal P/BV:</label><br>
+  <input type="text" id="p_bv" name="p_bv" value="3.0"><br><br>
+  <label for="p_bvg">Maximal P/BV Graham:</label><br>
+  <input type="text" id="p_bvg" name="p_bvg" value="3.0"><br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+</body>
+</html>

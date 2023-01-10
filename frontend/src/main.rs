@@ -1,8 +1,19 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Result, HttpRequest};
+use actix_files::NamedFile;
 use env_logger;
 use core::panic;
 use std::{env, process::CommandArgs};
 use std::collections::HashMap;
+
+#[derive(serde_derive::Deserialize)]
+struct FormData {
+    pub altman: String,
+    // pub piotroski: String,
+    // pub pe: String,
+    // pub roe: String,
+    // pub p_bv: String,
+    // pub p_bvg: String
+}
 
 
 #[actix_web::main]
@@ -14,6 +25,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
         .service(new_search)
         .service(set_requirements)
+        .service(update_requirements)
         .service(get_companies)
     })
     .bind(("127.0.0.1", 8090))?
@@ -28,11 +40,25 @@ async fn new_search() -> impl Responder {
     HttpResponse::Ok().body("New Search OK!")
 }
 
-#[get("/set_requirements")]
-async fn set_requirements() -> impl Responder {
+// #[get("/set_requirements")]
+// async fn set_requirements() -> impl Responder {
+//     let response = reqwest::get("http://127.0.0.1:8080/requirements").await.unwrap().text().await;
+//     println!("{:?}", response);
+//     HttpResponse::Ok().body("Requirements set OK!")
+// }
+
+#[post("/set_requirements")]
+async fn set_requirements(form: web::Form<FormData>) -> impl Responder {
+    println!("Value to show: {}", form.altman);
+    // println!("Value to show: {}", form.piotroski);
     let response = reqwest::get("http://127.0.0.1:8080/requirements").await.unwrap().text().await;
     println!("{:?}", response);
     HttpResponse::Ok().body("Requirements set OK!")
+}
+
+#[get("/update_requirements")]
+async fn update_requirements(req: HttpRequest) -> Result<NamedFile> {
+    Ok(NamedFile::open("html/requirements.html")?)
 }
 
 #[get("/get_companies")]
