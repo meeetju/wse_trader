@@ -9,7 +9,6 @@ use colored::Colorize;
 use futures::lock::Mutex;
 use log::{info, warn};
 use std::sync::Arc;
-use actix_web::{FromRequest, HttpRequest};
 
 #[derive(Debug, Clone)]
 pub struct RankedCompanies {
@@ -93,27 +92,24 @@ impl RankedCompanies {
             }
 
             if self.is_altman_ok(&company.altman) && self.is_piotroski_ok(company.f_score) {
+                company.update_indicators_link(Some(self.urls_modifier.clone()));
                 self.companies_list.lock().await.push(company);
             }
         }
     }
 
     pub async fn update_indicators(&mut self) {
-        Self::update_indicators_async(&self.companies_list, self.urls_modifier.clone()).await;
+        Self::update_indicators_async(&self.companies_list).await;
     }
 
-    async fn update_indicators_async(
-        companies_list: &Arc<Mutex<Vec<company::Company>>>,
-        modifier: UrlsModifier,
-    ) {
+    async fn update_indicators_async(companies_list: &Arc<Mutex<Vec<company::Company>>>) {
         let size = companies_list.lock().await.len();
         let mut handlers = Vec::new();
 
         for i in 0..size {
-            let modifier = modifier.clone();
             let list = Arc::clone(companies_list);
             let handle = tokio::spawn(async move {
-                Self::update_company_indicators(list, i, modifier).await;
+                Self::update_company_indicators(list, i).await;
             });
             handlers.push(handle)
         }
@@ -125,20 +121,17 @@ impl RankedCompanies {
 
     async fn update_company_indicators(
         companies_list: Arc<Mutex<Vec<company::Company>>>,
-        index: usize,
-        modifier: UrlsModifier,
+        index: usize
     ) {
         let company = &mut companies_list.lock().await[index];
 
-        let mut indicators_link = company.clone().get_indicators_link();
-        indicators_link = modifier.modify(indicators_link);
 
         let client = reqwest::Client::new();
-        let response = client.get(&indicators_link).send().await.unwrap();
+        let response = client.get(&company.link).send().await.unwrap();
         let content = response.text().await.unwrap();
 
         let table = table_extract::Table::find_first(&content).unwrap();
-        info!("Getting data from {}", &indicators_link);
+        info!("Getting data from {}", &company.link);
         let rows: Vec<&[String]> = table.into_iter().map(|row| row.as_slice()).collect();
 
         match rows.len() {
@@ -160,7 +153,7 @@ impl RankedCompanies {
                 // In case the URL does not consist of expected structure of data, inform the user
                 // that the link is incorrect and requires adding a mapping in the links_mappling.yaml
                 let warning =
-                    format!("{}", NotFoundError::WrongLinkError(indicators_link)).yellow();
+                    format!("{}", NotFoundError::WrongLinkError(company.link.clone())).yellow();
                 warn!("{}", warning);
             }
         }
@@ -252,20 +245,6 @@ impl RankedCompanies {
         }
     }
 }
-
-// impl FromRequest for RankedCompanies {
-//     type Error = actix_web::Error;
-//     type Future = futures::future::Ready<Result<Self, Self::Error>>;
-
-//     fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
-//         match req.extensions().get::<User>() {
-//             Some(user) => return ok(user.clone()),
-//             None => return err(actix_web::error::ErrorBadRequest("ups..."))
-//         };
-//     }
-
-// }
-
 
 #[cfg(test)]
 mod tests {

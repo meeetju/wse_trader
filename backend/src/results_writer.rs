@@ -23,6 +23,7 @@ impl Output for CsvWriter {
         wtr.write_record(&[
             "name",
             "ticker",
+            "link",
             "altman",
             "piotroski",
             "pe",
@@ -34,6 +35,7 @@ impl Output for CsvWriter {
             wtr.write_record(&[
                 &company.name,
                 &company.ticker,
+                &company.link,
                 &company.altman,
                 &company.f_score.to_string(),
                 &company.pe.to_string(),
@@ -55,9 +57,10 @@ impl Output for ConsolePrinter {
         println!("name,ticker,altman,piotroski,pe,roe,p_bv,p_bvg");
         for company in companies_list {
             println!(
-                "{}, {}, {}, {}, {}, {}, {}, {}",
+                "{}, {}, {}, {}, {}, {}, {}, {}, {}",
                 company.name,
                 company.ticker,
+                company.link,
                 company.altman,
                 company.f_score,
                 company.pe,
@@ -80,6 +83,7 @@ impl JsonWriter {
             let cmp = JsonCompany {
                 name: company.name,
                 ticker: company.ticker,
+                link: company.link,
                 altman: company.altman,
                 piotroski: company.f_score.to_string(),
                 pe: company.pe.to_string(),
@@ -107,6 +111,7 @@ impl Output for JsonWriter {
 pub struct JsonCompany {
     name: String,
     ticker: String,
+    link: String,
     altman: String,
     piotroski: String,
     pe: String,

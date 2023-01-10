@@ -38,7 +38,6 @@ async fn set_requirements() -> impl Responder {
 #[get("/get_companies")]
 async fn get_companies() -> impl Responder {
     let response = reqwest::get("http://127.0.0.1:8080/companies").await.unwrap().text().await;
-    println!("{:?}", &response);
     let mut result = String::new();
 
     let companies = match response {
@@ -70,7 +69,8 @@ async fn get_companies() -> impl Responder {
 
     let headers: Vec<String> = vec![
         "name".to_string(), 
-        "ticker".to_string(), 
+        "ticker".to_string(),
+        "link".to_string(), 
         "altman".to_string(), 
         "piotroski".to_string(), 
         "pe".to_string(), 
@@ -91,7 +91,15 @@ async fn get_companies() -> impl Responder {
         result += "<tr>";
         for header in headers.clone() {
             result += "<td>";
-            result += company.get(&header).unwrap();
+
+            match header.as_str() {
+                "link" => {
+                    let link = company.get(&header).unwrap();
+                    result += &format!("<a href=\"{link}\">{link}</a>");
+                },
+                _ => {result += company.get(&header).unwrap();}
+            }
+
             result += "</td>";
         }
         result += "</tr>";
