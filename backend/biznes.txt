@@ -1,0 +1,1336 @@
+<!doctype html>
+<html dir="ltr" lang="pl">
+<head>
+	
+
+
+									<meta charset="utf-8" />
+	<meta name="viewport" content="width=1024">
+	<title>Rating: Akcje GPW - BiznesRadar.pl</title>
+	<meta name="description" content="Ocena kondycji finansowej spółek GPW w oparciu o wskaźniki Altman EM-Score oraz Piotroski F-Score. Tabela porównawcza." />	<meta name="keywords" content="akcje gpw,rating,ocena kondycji finansowej,Altman EM-Score,Piotroski F-Score">		<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	
+	<meta property="og:image" content="https://www.biznesradar.pl/gfx/socials_default_img.png" />
+			<link rel="stylesheet" type="text/css" href="/assets/css/style_old.css?v=20230315-2">
+	<link media="all" type="text/css" href="/assets/js/source/exeria/lib/fa/css/font-awesome.min.css" rel="stylesheet" />
+	<!--[if lt IE 9]>
+		<script type="text/javascript" src="/js/excanvas_r73.min.js" charset="utf-8"></script>
+	<![endif]-->
+	<script type="text/javascript" src="/assets/js/service_libs_old.js?v=20230315-2"></script>
+	<script type="text/javascript" src="/assets/js/service_old.js?v=20230315-2"></script>
+
+		<script type="text/javascript" src="https://www.biznesradar.pl/service-data-js/8"></script>
+	<script type="text/javascript" src="/js/adex.js"></script>
+	<script type="text/javascript"><!--
+		document.write('\x3cscript type="text/javascript" src="/user-data-js/' + new Date().getTime() + '">\x3c/script>');
+	//--></script>
+	<script type="text/javascript"><!--
+		Controller.ADF();
+	//--></script>
+
+	<script type="text/javascript">
+		if(!/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+			document.write('\x3cscript type="text/javascript" src="/assets/js/dialogs_old.js?v=20230315-2">\x3c/script>');
+			document.write('<link rel="stylesheet" type="text/css" href="/assets/css/dialogs_old.css?v=20230315-2">');
+		}
+	</script>
+
+			<script type="text/javascript"><!--
+	
+$().ready(function() {
+	Controller.init('PROFILES');
+	Controller.attachSymbolsTooltip();
+});
+	
+
+
+$().ready(function() {
+	Controller.userSymbolTipAttach();
+});
+	
+
+$().ready(function() {
+	Controller.bookmarkAttach();
+});	
+
+$().ready(function() {
+	Controller.initSymbolSearch();
+});	
+
+	//--></script>
+		<script type="text/javascript"><!--
+		var serviceRootDomain = 'biznesradar.pl';
+	//--></script>
+	<script>
+	if(!window.DAD){
+		var gdfp_async = true;
+			var _dfp_sd = "";
+		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_SourceBox', [300, 50], 'div-gpt-ad-5096498505-0').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+	if($(window).width() > 1100){		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_Profile_wide', [[468,60],[728,90],[750,100],[750,200]], 'div-gpt-ad-2436776888-1').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+	} else {
+		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_Profile', [[468,60],[728,90],[750,100],[750,200]], 'div-gpt-ad-2436776888-1').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+	}
+	if($(window).width() > 1100){		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_Profile_wide2', [[468,60],[728,90],[750,100],[750,200]], 'div-gpt-ad-4839734673-2').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+	} else {
+		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_Profile2', [[468,60],[728,90],[750,100],[750,200]], 'div-gpt-ad-4839734673-2').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+	}
+		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_300x250', [[300,250],[300,600]], 'div-gpt-ad-9334567464-3').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+		_dfp_sd += "googletag.defineSlot('/60562554/BiznesRadar.pl_300x100', [300, 100], 'div-gpt-ad-6393563105-4').setTargeting('br_channel', 'PROFILE').setTargeting('br_source', 'BDM').addService(googletag.pubads());\r\n";
+		if(gdfp_async){
+			var _dfp_h = ""
+				+"<sc" + "ript>\r\n"
+				+"var googletag = googletag || {};\r\n"
+				+"googletag.cmd = googletag.cmd || [];\r\n"
+				+"(function() {\r\n"
+				+"var gads = document.createElement('script');\r\n"
+				+"gads.async = true;\r\n"
+				+"gads.type = 'text/javascript';\r\n"
+				+"var useSSL = 'https:' == document.location.protocol;\r\n"
+				+"gads.src = (useSSL ? 'https:' : 'http:') +\r\n"
+				+"'//www.googletagservices.com/tag/js/gpt.js';\r\n"
+				+"var node = document.getElementsByTagName('script')[0];\r\n"
+				+"node.parentNode.insertBefore(gads, node);\r\n"
+				+"})();\r\n"
+				+"</scr" + "ipt>\r\n"
+				+"<scr" + "ipt type=\"text/javascript\">\r\n"
+				+"googletag.cmd.push(function() {\r\n"
+				+ _dfp_sd
+				+"googletag.pubads().enableSingleRequest();\r\n"
+				+"googletag.pubads().collapseEmptyDivs();\r\n"
+				+"googletag.enableServices();\r\n"
+				+"})\r\n"
+				+"</scr" + "ipt>";
+			document.write(_dfp_h);
+		} else {
+			var _dfp_h = ""
+				+"<scr" + "ipt type=\"text/javascript\">\r\n"
+				+"(function() {\r\n"
+				+"var useSSL = 'https:' == document.location.protocol;\r\n"
+				+"var src = (useSSL ? 'https:' : 'http:') +\r\n"
+				+"'//www.googletagservices.com/tag/js/gpt.js';\r\n"
+				+"document.write('<scr' + 'ipt src=\"' + src + '\"></scr' + 'ipt>');\r\n"
+				+"})();\r\n"
+				+"</scr" + "ipt>";
+			document.write(_dfp_h);
+		}
+	}
+	else{
+		googletag = undefinedgoogletag = {display: function(){},pubads: function(){return {enableSyncRendering: function(){},enableSingleRequest: function(){}}}, enableServices: function(){}}; 
+	}
+</script>
+	
+	<script>
+		function _gu(){
+			if(typeof account != 'undefined' && account.oid) return account.oid;
+			var _c = document.cookie.match(RegExp('(?:^|;\\s*)_ga=([^;]*)'));
+			if(_c) return "GA_"+_c[1].split('.')[2] || "";
+			return "";
+		}
+		dataLayer = [{
+			'dimension1': (typeof account != 'undefined' && account.oid ? 'YES' : 'NO'),
+			'dimension3': (typeof _advertising != 'undefined' ? 'NO' : 'YES'),
+			'dimension5': 'NO',
+									'UserLogged': (typeof account != 'undefined' && account.oid ? 'Yes' : 'No'),
+			'Authentication': (typeof account != 'undefined' && account.oid ? (account.service == 'SE' ? 'standard' : 'social') : ''),
+			'User': '' + _gu(),
+			'PageType': 'other',
+'PremiumContent': 'No',
+'PageSubCategory': 'ND',
+'PageCategory': 'Giełda',
+
+		}];
+	</script>
+	<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-MJF7SFF');</script>
+<!-- End Google Tag Manager --></head>
+<body itemtype="http://schema.org/WebPage" itemscope=""><script>
+	if(!gdfp_async){
+		var _dfp_h = ""
+			+"<scr" + "ipt>\r\n"
+			+ _dfp_sd
+			+"googletag.pubads().enableSyncRendering();\r\n"
+			+"googletag.pubads().enableSingleRequest();\r\n"
+			+"googletag.enableServices();\r\n"
+			+"</scr" + "ipt>";
+		document.write(_dfp_h);
+	}
+</script>
+
+<script>
+		if(!window.DAD){
+		document.write('<scr' + 'ipt async src="//get.optad360.io/sf/43fa4186-41d3-11e8-a7ed-06048607e8f8/plugin.min.js"></scr' + 'ipt>');
+	}
+</script>
+<script>View.bodyWrapperOpen()</script>
+<div id="tt" style="position: absolute; top:10px; left: 200px;display: none"></div>		
+
+<div id="body">
+	<div id="ads-billboard-c">
+		</div>
+	<div id="content">
+		<div id="right-wrapper">
+			<div id="right">
+				<div class="br-subs-lead-c">
+					<div class="br-subs-lead">
+						<div>
+							<span></span>
+							<p>
+								<em>Biznesradar Premium</em>
+								<span>
+									czy
+									<em>Biznesradar Plus</em>?
+								</span>
+							</p>
+							<span></span>
+						</div>
+						<div>
+							<p>od którego produktu zacząć?</p>
+							<a class="button" href="https://premium.biznesradar.pl/porownaj-produkty" target="_blank">SPRAWDŹ</a>
+						</div>
+					</div>
+				</div>
+				<div id="right-min-width" class="cb"><!-- --></div>
+								<main><div id="right-content">
+	<div class="inside toolbar-space">
+	
+	<div id="ads-sourcebox-c">
+	<div class="adbox" id="div-gpt-ad-5096498505-0">
+<script>
+	if(gdfp_async){
+		document.write("<sc" + "ript>\r\n" + "googletag.cmd.push(function() { googletag.display('div-gpt-ad-5096498505-0'); });\r\n" + "</scr" + "ipt>");
+	} else {
+		googletag.display('div-gpt-ad-5096498505-0');
+	}
+</script>
+</div>
+
+</div>
+	<h1 class="sub">Rating: Akcje GPW</h1>	
+	<div class="profile-menu">
+	<nav>
+		<ul class="tabmemu level1"><li data-key="101"><a href="/gielda/akcje_gpw" title="NOTOWANIA">NOTOWANIA</a></li><li data-key="103"><a href="/analiza-techniczna-profile/akcje_gpw" title="ANALIZA TECHNICZNA">ANALIZA TECHNICZNA</a></li><li data-key="104" class="active"><a href="/spolki-raporty-finansowe-rachunek-zyskow-i-strat/akcje_gpw" title="ANALIZA FINANSOWA"><strong>ANALIZA FINANSOWA</strong></a></li></ul><ul class="tabmemu level2" data-related-key="103" style="display:none"><li data-key="201"><a href="/analiza-techniczna-profile/akcje_gpw" title="WSKAŹNIKI">WSKAŹNIKI</a></li><li data-key="202"><a href="/ryzyko/akcje_gpw" title="RYZYKO">RYZYKO</a></li><li data-key="203"><a href="/stopy-zwrotu/akcje_gpw" title="STOPY ZWROTU">STOPY ZWROTU</a></li><li data-key="204"><a href="/minmax/akcje_gpw" title="MIN MAX">MIN MAX</a></li><li data-key="205"><a href="/trendy/akcje_gpw" title="TRENDY">TRENDY</a></li></ul><ul class="tabmemu level2" data-related-key="104"><li data-key="201"><a href="/spolki-raporty-finansowe-rachunek-zyskow-i-strat/akcje_gpw" title="RAPORTY FINANSOWE">RAPORTY FINANSOWE</a></li><li data-key="202"><a href="/spolki-wskazniki-wartosci-rynkowej/akcje_gpw" title="WSKAŹNIKI">WSKAŹNIKI</a></li><li data-key="203" class="active"><a href="/spolki-rating/akcje_gpw" title="RATING"><strong>RATING</strong></a></li></ul><ul class="tabmemu level3" data-related-key="201" style="display:none"><li data-key="301"><a href="/spolki-raporty-finansowe-rachunek-zyskow-i-strat/akcje_gpw" title="RACHUNEK ZYSKÓW I STRAT">RACHUNEK ZYSKÓW I STRAT</a></li><li data-key="302"><a href="/spolki-raporty-finansowe-bilans/akcje_gpw" title="BILANS">BILANS</a></li><li data-key="303"><a href="/spolki-raporty-finansowe-przeplywy-pieniezne/akcje_gpw" title="PRZEPŁYWY PIENIĘŻNE">PRZEPŁYWY PIENIĘŻNE</a></li></ul><ul class="tabmemu level3" data-related-key="202" style="display:none"><li data-key="301"><a href="/spolki-wskazniki-wartosci-rynkowej/akcje_gpw" title="WARTOŚCI RYNKOWEJ">WARTOŚCI RYNKOWEJ</a></li><li data-key="302"><a href="/spolki-wskazniki-rentownosci/akcje_gpw" title="RENTOWNOŚCI">RENTOWNOŚCI</a></li><li data-key="303"><a href="/spolki-wskazniki-przeplywow-pienieznych/akcje_gpw" title="PRZEPŁYWÓW PIENIĘŻNYCH">PRZEPŁYWÓW PIENIĘŻNYCH</a></li><li data-key="304"><a href="/spolki-wskazniki-zadluzenia/akcje_gpw" title="ZADŁUŻENIA">ZADŁUŻENIA</a></li><li data-key="305"><a href="/spolki-wskazniki-plynnosci/akcje_gpw" title="PŁYNNOŚCI">PŁYNNOŚCI</a></li><li data-key="306"><a href="/spolki-wskazniki-aktywnosci/akcje_gpw" title="AKTYWNOŚCI">AKTYWNOŚCI</a></li></ul>
+		<div class="cb"></div>
+	</nav>
+</div>
+	
+	<a style="float:none" href="javascript:void(0)" class="dictionary-showlink" onclick="$('.profiles-dictionary-c dl').show('slow');$(this).remove()">Zobacz opisy wskaźników</a>
+	<div class="profiles-dictionary-c">
+		<dl>
+			<dt>Altman EM-Score</dt>
+			<dd><p>Wskaźnik ocenia kondycję finansową spółki oraz jej ryzyko bankructwa. Na podstawie obliczonej wartości wskaźnika przyjmuje się rating w skali od AAA do D, gdzie rating AAA oznacza najlepszą kondycję finansową. Przyjmuje się, że wartość wskaźnika powyżej wartości 5.5 (powyżej BB+) oznacza niskie zagrożenie upadłością.</p></dd>
+			<dt style="margin-top:30px">Piotroski F-Score</dt>
+			<dd><p>F-Score opiera się na 9 kryteriach zmiany trendów wskaźników oceniających zyskowność, efektywność operacyjną oraz zadłużenia przedsiębiorstwa. Wskaźnik przyjmuje wartości w przedziale od 0 do 9. Wyższe wartości wskaźnika świadczą o pozytywnej dynamice zmian składowych kryteriów.</p></dd>
+		</dl>	
+	</div>
+	
+	<div class="aslot-profile">
+	<div class="adbox">
+	<div class="adbox" id="div-gpt-ad-2436776888-1">
+<script>
+	if(gdfp_async){
+		document.write("<sc" + "ript>\r\n" + "googletag.cmd.push(function() { googletag.display('div-gpt-ad-2436776888-1'); });\r\n" + "</scr" + "ipt>");
+	} else {
+		googletag.display('div-gpt-ad-2436776888-1');
+	}
+</script>
+</div>
+
+		</div>
+</div>
+	
+	<table class="qTableFull">
+						<tr>
+			<th><a href="/spolki-rating/akcje_gpw,0,1" class="list_order">Profil</a></th>
+			<th><a href="/spolki-rating/akcje_gpw,1,2" class="list_order">Raport</a></th>
+			<th><a href="/spolki-rating/akcje_gpw,2,1" class="list_order list_order_desc">Altman EM-Score</a></th>
+			<th><a href="/spolki-rating/akcje_gpw,3,2" class="list_order">Piotroski F-Score</a></th>
+		</tr>
+				<tr>
+			<td class="bvalue"><a class="s_tt s_tt_sname_DAD" href="/rating/DAD" title="DADELO SPÓŁKA AKCYJNA">DAD (DADELO)</a></td>
+			<td>2022/Q3</td>
+			<td class="bvalue"><span class="pv"><span><span style="color:#03AD01">AAA</span></span></span> (<span class="pv"><span>20.6</span></span>)</td>
+			<td><span class="pv"><span><span style="color:#D51515">2</span></span></span></td>
+		</tr>
+						<tr class="ad">
+			<td colspan="4"><div class="aslot-profile-bottom">
+	<div class="adbox">
+	<div class="adbox" id="div-gpt-ad-4839734673-2">
+<script>
+	if(gdfp_async){
+		document.write("<sc" + "ript>\r\n" + "googletag.cmd.push(function() { googletag.display('div-gpt-ad-4839734673-2'); });\r\n" + "</scr" + "ipt>");
+	} else {
+		googletag.display('div-gpt-ad-4839734673-2');
+	}
+</script>
+</div>
+
+	</div>
+</div>
+</td>
+					</tr>
+				<tr>
+			<th><a href="/spolki-rating/akcje_gpw,0,1" class="list_order">Profil</a></th>
+			<th><a href="/spolki-rating/akcje_gpw,1,2" class="list_order">Raport</a></th>
+			<th><a href="/spolki-rating/akcje_gpw,2,1" class="list_order list_order_desc">Altman EM-Score</a></th>
+			<th><a href="/spolki-rating/akcje_gpw,3,2" class="list_order">Piotroski F-Score</a></th>
+		</tr>
+				<tr>
+			<td class="bvalue"><a class="s_tt s_tt_sname_SFG" href="/rating/AS-SILVANO-FASHION" title="AS SILVANO FASHION GROUP">SFG (SILVANO)</a></td>
+			<td>2022/Q3</td>
+			<td class="bvalue"><span class="pv"><span><span style="color:#03AD01">AAA</span></span></span> (<span class="pv"><span>13.9</span></span>)</td>
+			<td><span class="pv"><span><span style="color:#595959">5</span></span></span></td>
+		</tr>
+				<tr>
+			<td class="bvalue"><a class="s_tt s_tt_sname_MON" href="/rating/MONNARI-TRADE" title="MONNARI TRADE SPÓŁKA AKCYJNA">MON (MONNARI)</a></td>
+			<td>2022/Q3</td>
+			<td class="bvalue"><span class="pv"><span><span style="color:#03AD01">AAA</span></span></span> (<span class="pv"><span>11.8</span></span>)</td>
+			<td><span class="pv"><span><span style="color:#189816">8</span></span></span></td>
+		</tr>
+				<tr>
+			<td class="bvalue"><a class="s_tt s_tt_sname_XTB" href="/rating/XTB" title="X-TRADE BROKERS DOM MAKLERSKI SPÓŁKA AKCYJNA">XTB</a></td>
+			<td>2022/Q4</td>
+			<td class="bvalue"><span class="pv"><span><span style="color:#03AD01">AAA</span></span></span> (<span class="pv"><span>8.2</span></span>)</td>
+			<td><span class="pv"><span><span style="color:#189816">9</span></span></span></td>
+		</tr>
+		</table>
+	
+	<div class="profiles-at"><a href="#at" onclick="Controller.showProfilesAt([])">analiza techniczna</a></div>
+	<div id="at"></div>
+	<div id="profiles-at"></div>
+	<div id="sj-helper"></div>
+	
+	<div class="info-box3">
+	<strong><a href="/skaner-akcji/" title="Skaner akcji GPW">Skaner akcji GPW</a></strong>: Znajdź najlepsze spółki. Sam określ kryteria dzięki którym znajdziesz najbardziej atrakcyjne spółki GPW.
+</div>	
+		
+	<div class="disclaimer">
+		Piotroski F-Score: Uzględniane są dane urocznione z 4 ostatnich kwartałów i porównywalne do analogicznego okresu r/r.
+	</div>
+	<div class="disclaimer">
+		Wskaźniki prezentują jedynie użyteczne informacje dotyczące kondycji finansowej spółek i nie są rekomendacją w rozumieniu przepisów Rozporządzenia Ministra Finansów z dnia 19 października 2005 r. w sprawie informacji stanowiących rekomendacje dotyczące instrumentów finansowych lub ich emitentów (Dz. U. z 2005 r. Nr 206, poz. 1715).
+	</div>
+
+	<div class="tools absolute">
+	<a class="btn usersymboltip-show-hook" href="javascript:void(0)" rel="nofollow"><span class="ui-icon ui-icon-usersymbols"></span><span class="text">w radarze</span></a>
+	<a class="btn bookmarks-show-hook" href="javascript:void(0)" rel="nofollow"><span class="ui-icon ui-icon-bookmarks"></span><span class="text">ulubione</span></a>
+	<div class="textseparator">Znajdź profil: </div>
+	<input type="text" name="search-profile" id="search-profile" />
+	<div class="cb" style=""></div>
+</div>	
+	</div>
+</div>
+</main>				<div class="cb"></div>
+			</div>
+		</div>
+		<div id="left">
+			<div id="left-content">
+	<div class="inside">
+		<div class="aslot-navibox">
+	<div class="adbox" id="div-gpt-ad-9334567464-3">
+<script>
+	if(gdfp_async){
+		document.write("<sc" + "ript>\r\n" + "googletag.cmd.push(function() { googletag.display('div-gpt-ad-9334567464-3'); });\r\n" + "</scr" + "ipt>");
+	} else {
+		googletag.display('div-gpt-ad-9334567464-3');
+	}
+</script>
+</div>
+
+</div>
+<div class="aslot-navibox">
+	<div class="adbox" id="div-gpt-ad-6393563105-4">
+<script>
+	if(gdfp_async){
+		document.write("<sc" + "ript>\r\n" + "googletag.cmd.push(function() { googletag.display('div-gpt-ad-6393563105-4'); });\r\n" + "</scr" + "ipt>");
+	} else {
+		googletag.display('div-gpt-ad-6393563105-4');
+	}
+</script>
+</div>
+
+</div>
+<section>
+<div class="navi-container">
+	<div class="fifrak"><!-- --></div>
+	
+		
+	<div class="box-left">
+		<div class="box-left">
+			<nav>
+				<ul class="subnavi">
+					<li><a href="/skaner-akcji/" title="Skaner akcji GPW"><strong>Skaner akcji GPW</strong></a></li>
+					<li><a href="/sygnaly-analizy-technicznej/" title="Sygnały analizy technicznej"><strong>Sygnały</strong></a></li>
+					<li><a href="/formacje-swiecowe/" title="Formacje świecowe"><strong>Formacje świecowe</strong></a></li>
+					<li><a href="/rekomendacje/" title="Rekomendacje giełdowe"><strong>Rekomendacje</strong></a></li>
+					<li><a href="/spolki-wskazniki-wartosci-rynkowej/akcje_gpw" title="Wskaźniki giełdowe"><strong>Wskaźniki fundamentalne GPW</strong></a></li>
+					<li><a href="/analiza-techniczna-profile/akcje_gpw" title="Wskaźniki analizy technicznej"><strong>Wskaźniki techniczne GPW</strong></a></li>
+					<li><a href="/ryzyko/akcje_gpw" title="Analiza portfelowa: Ocena ryzyka inwestycyjnego"><strong>Analiza portfelowa GPW</strong></a></li>
+					<li><a href="/stopy-zwrotu/akcje_gpw" title="Stopy zwrotu akcji GPW"><strong>Stopy zwrotu akcji GPW</strong></a></li>
+					<li><a href="/sektory-gpw/" title="Stopy zwrotu sektorów GPW"><strong>Stopy zwrotu sektorów GPW</strong></a></li>
+					<li><a href="/statystyka-sesji/" title="Statystyka sesji GPW"><strong>Statystyka sesji GPW</strong></a></li>
+					<li><a href="/dynamika-obrotow/" title="Dynamika obrotów akcji GPW i NewConnect"><strong>Dynamika obrotów GPW</strong></a></li>
+					<li><a href="/symbols-rank/" title="Ranking popularności profili"><strong>Ranking popularności</strong></a></li>
+				</ul>
+			</nav>			
+		</div>
+		
+		<div class="header"><h2>Według typu</h2></div>
+		<nav>
+			<ul class="subnavi">
+				<li><a href="/spolki-rating/"  title="Akcje">Akcje</a>
+					<ul class="subnavi2">
+						<li><a href="/spolki-rating/akcje_gpw" class="active" title="Akcje GPW"><strong>GPW</strong></a></li>
+						<li><a href="/spolki-rating/newconnect"  title="Akcje NewConnect">NewConnect</a></li>
+													<li><a href="/spolki-rating/akcje_globalconnect"  title="Akcje GlobalConnect">GlobalConnect</a></li>
+											</ul>
+				</li>
+												<li><a href="/gielda/indeksy"  title="Indeksy GPW">Indeksy</a></li>
+				<li><a href="/gielda/obligacje"  title="Obligacje Catalyst GPW"></a>
+				</li>
+				<li><a href="/gielda/pochodne"  title="Instrumenty pochodne">Pochodne</a>
+					<ul class="subnavi2">
+						<li><a href="/gielda/pochodne_kontrakty"  title="Kontrakty terminowe">Kontrakty</a></li>
+						<li><a href="/gielda/pochodne_opcje"  title="Kontrakty opcyjne">Opcje</a></li>
+					</ul>
+				</li>
+				<li><a href="/gielda/etf"  title="ETF">ETF</a></li>
+				<li><a href="/gielda/strukturyzowane"  title="Produkty strukturyzowane">Strukturyzowane</a></li>
+				<li><a href="/gielda/certyfikaty_inwestycyjne"  title="Certyfikaty inwestycyjne">Certyfikaty inwestycyjne</a></li>
+				<li><a href="/gielda/warranty"  title="Warranty">Warranty</a></li>
+				<li style="margin-top:15px"><a href="/gielda/indeksy_swiatowe"  title="Indeksy zagraniczne">Indeksy światowe</a></li>
+				<li><a href="/gielda/towary"  title="Kontrakty terminowe na towary">Towary</a></li>
+							</ul>	
+		</nav>
+	</div>
+		<div class="box-left">
+		<div class="header"><h2>Według indeksu</h2></div>
+		<nav>
+			<ul class="subnavi">
+							<li>
+					<a href="/spolki-rating/indeks:GPWB-B1Y3Y"  title="Indeks GPWB-B1Y3Y">
+											GPWB-B1Y3Y										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:GPWB-B1Y4Y"  title="Indeks GPWB-B1Y4Y">
+											GPWB-B1Y4Y										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:GPWB-B1Y5Y"  title="Indeks GPWB-B1Y5Y">
+											GPWB-B1Y5Y										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:GPWB-B3Y5Y"  title="Indeks GPWB-B3Y5Y">
+											GPWB-B3Y5Y										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:GPWB-B5Y"  title="Indeks GPWB-B5Y">
+											GPWB-B5Y										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:INNOVATOR"  title="Indeks INNOVATOR">
+											INNOVATOR										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:mWIG40"  title="Indeks mWIG40">
+											mWIG40										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:mWIG40dvp"  title="Indeks mWIG40dvp">
+											mWIG40dvp										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:mWIG40TR"  title="Indeks mWIG40TR">
+											mWIG40TR										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:NCIndex"  title="Indeks NCIndex">
+											NCIndex										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:sWIG80"  title="Indeks sWIG80">
+											sWIG80										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:sWIG80dvp"  title="Indeks sWIG80dvp">
+											sWIG80dvp										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:sWIG80TR"  title="Indeks sWIG80TR">
+											sWIG80TR										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:TBSP.Index"  title="Indeks TBSP.Index">
+											TBSP.Index										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG"  title="Indeks WIG">
+											WIG										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-BANKI"  title="Indeks WIG-banki">
+											WIG-banki										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-BUDOW"  title="Indeks WIG-budownictwo">
+											WIG-budownictwo										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-CEE"  title="Indeks WIG-CEE">
+											WIG-CEE										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-CHEMIA"  title="Indeks WIG-chemia">
+											WIG-chemia										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-ENERG"  title="Indeks WIG-energia">
+											WIG-energia										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-ESG"  title="Indeks WIG-ESG">
+											WIG-ESG										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-GORNIC"  title="Indeks WIG-górnictwo">
+											WIG-górnictwo										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-GRY"  title="Indeks WIG-GRY">
+											WIG-GRY										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-INFO"  title="Indeks WIG-informatyka">
+											WIG-informatyka										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-LEKI"  title="Indeks WIG-leki">
+											WIG-leki										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-MEDIA"  title="Indeks WIG-media">
+											WIG-media										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-MOTO"  title="Indeks WIG-motoryzacja">
+											WIG-motoryzacja										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-NRCHOM"  title="Indeks WIG-nieruchomości">
+											WIG-nieruchomości										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-ODZIEZ"  title="Indeks WIG-odzież">
+											WIG-odzież										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-PALIWA"  title="Indeks WIG-paliwa">
+											WIG-paliwa										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-Poland"  title="Indeks WIG-Poland">
+											WIG-Poland										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-SPOZYW"  title="Indeks WIG-spożywczy">
+											WIG-spożywczy										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG-Ukrain"  title="Indeks WIG-Ukraine">
+											WIG-Ukraine										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG.GAMES5"  title="Indeks WIG.GAMES5">
+											WIG.GAMES5										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG.MS-BAS"  title="Indeks WIG.MS-BAS">
+											WIG.MS-BAS										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG.MS-FIN"  title="Indeks WIG.MS-FIN">
+											WIG.MS-FIN										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG.MS-PET"  title="Indeks WIG.MS-PET">
+											WIG.MS-PET										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG140"  title="Indeks WIG140">
+											WIG140										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG20"  title="Indeks WIG20">
+											WIG20										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG20dvp"  title="Indeks WIG20dvp">
+											WIG20dvp										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG20lev"  title="Indeks WIG20lev">
+											WIG20lev										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG20short"  title="Indeks WIG20short">
+											WIG20short										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG20TR"  title="Indeks WIG20TR">
+											WIG20TR										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG30"  title="Indeks WIG30">
+											WIG30										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIG30TR"  title="Indeks WIG30TR">
+											WIG30TR										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIGdiv"  title="Indeks WIGdiv">
+											WIGdiv										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIGtech"  title="Indeks WIGtech">
+											WIGtech										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/indeks:WIGtechTR"  title="Indeks WIGtechTR">
+											WIGtechTR										</a>
+				</li>
+						</ul>	
+		</nav>
+	</div>
+	
+		<div class="box-left">
+		<div class="header"><h2>Według branży</h2></div>
+		<nav>
+			<ul class="subnavi">
+							<li>
+					<a href="/spolki-rating/branza:artykuly-spozywcze"  title="Branża Artykuły spożywcze">
+											Artykuły spożywcze
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:banki"  title="Branża Banki">
+											Banki
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:biotechnologia"  title="Branża Biotechnologia">
+											Biotechnologia
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:budownictwo"  title="Branża Budownictwo">
+											Budownictwo
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:chemia"  title="Branża Chemia">
+											Chemia
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:drewno-i-papier"  title="Branża Drewno i papier">
+											Drewno i papier
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:dystrybucja-ciepla-i-wody"  title="Branża Dystrybucja ciepła i wody">
+											Dystrybucja ciepła i wody
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:dystrybucja-lekow"  title="Branża Dystrybucja leków">
+											Dystrybucja leków
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:dzialalnosc-inwestycyjna"  title="Branża Działalność inwestycyjna">
+											Działalność inwestycyjna
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:energia"  title="Branża Energia">
+											Energia
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:gornictwo"  title="Branża Górnictwo">
+											Górnictwo
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:gry"  title="Branża Gry">
+											Gry
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:guma-i-tworzywa-sztuczne"  title="Branża Guma i tworzywa sztuczne">
+											Guma i tworzywa sztuczne
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:handel-hurtowy"  title="Branża Handel hurtowy">
+											Handel hurtowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:handel-internetowy"  title="Branża Handel internetowy">
+											Handel internetowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:hutnictwo"  title="Branża Hutnictwo">
+											Hutnictwo
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:informatyka"  title="Branża Informatyka">
+											Informatyka
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:leasing-i-faktoring"  title="Branża Leasing i faktoring">
+											Leasing i faktoring
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:media"  title="Branża Media">
+											Media
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:motoryzacja"  title="Branża Motoryzacja">
+											Motoryzacja
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:nieruchomosci"  title="Branża Nieruchomości">
+											Nieruchomości
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:nowe-technologie"  title="Branża Nowe technologie">
+											Nowe technologie
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:odziez-i-kosmetyki"  title="Branża Odzież i kosmetyki">
+											Odzież i kosmetyki
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:paliwa-i-gaz"  title="Branża Paliwa i gaz">
+											Paliwa i gaz
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:posrednictwo-finansowe"  title="Branża Pośrednictwo finansowe">
+											Pośrednictwo finansowe
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:pozostale"  title="Branża Pozostałe">
+											Pozostałe
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:produkcja-lekow"  title="Branża Produkcja leków">
+											Produkcja leków
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:przemysl-elektromaszynowy"  title="Branża Przemysł elektromaszynowy">
+											Przemysł elektromaszynowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:recykling"  title="Branża Recykling">
+											Recykling
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:rekreacja-i-wypoczynek"  title="Branża Rekreacja i wypoczynek">
+											Rekreacja i wypoczynek
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:rynek-kapitalowy"  title="Branża Rynek kapitałowy">
+											Rynek kapitałowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:sieci-handlowe"  title="Branża Sieci handlowe">
+											Sieci handlowe
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:sprzet-i-materialy-medyczne"  title="Branża Sprzęt i materiały medyczne">
+											Sprzęt i materiały medyczne
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:szpitale-i-przychodnie"  title="Branża Szpitale i przychodnie">
+											Szpitale i przychodnie
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:telekomunikacja"  title="Branża Telekomunikacja">
+											Telekomunikacja
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:transport-i-logistyka"  title="Branża Transport i logistyka">
+											Transport i logistyka
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:ubezpieczenia"  title="Branża Ubezpieczenia">
+											Ubezpieczenia
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:uslugi-dla-przedsiebiorstw"  title="Branża Usługi dla przedsiębiorstw">
+											Usługi dla przedsiębiorstw
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:wierzytelnosci"  title="Branża Wierzytelności">
+											Wierzytelności
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:wyposazenie-domu"  title="Branża Wyposażenie domu">
+											Wyposażenie domu
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/branza:zaopatrzenie-przedsiebiorstw"  title="Branża Zaopatrzenie przedsiębiorstw">
+											Zaopatrzenie przedsiębiorstw
+										</a>
+				</li>
+						</ul>	
+		</nav>
+	</div>
+	
+		<div class="box-left">
+		<div class="header"><h2>Według sektora GPW</h2></div>
+		<nav>
+			<ul class="subnavi">
+							<li>
+					<a href="/spolki-rating/sektor:ban"  title="Sektor GPW: Banki">
+											Banki
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:bud"  title="Sektor GPW: Budownictwo">
+											Budownictwo
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:dew"  title="Sektor GPW: Deweloperzy">
+											Deweloperzy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:ene"  title="Sektor GPW: Energetyka">
+											Energetyka
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:fin"  title="Sektor GPW: Finanse inne">
+											Finanse inne
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:had"  title="Sektor GPW: Handel detaliczny">
+											Handel detaliczny
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:hah"  title="Sektor GPW: Handel hurtowy">
+											Handel hurtowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:hir"  title="Sektor GPW: Hotele i restauracje">
+											Hotele i restauracje
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:inf"  title="Sektor GPW: Informatyka">
+											Informatyka
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:kon"  title="Sektor GPW: Konglomeraty">
+											Konglomeraty
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:med"  title="Sektor GPW: Media">
+											Media
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:spo"  title="Sektor GPW: Przemysł spożywczy">
+											Przemysł spożywczy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:lek"  title="Sektor GPW: Przemysł lekki">
+											Przemysł lekki
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:drz"  title="Sektor GPW: Przemysł drzewny">
+											Przemysł drzewny
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:che"  title="Sektor GPW: Przemysł chemiczny">
+											Przemysł chemiczny
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:far"  title="Sektor GPW: Przemysł farmaceutyczny">
+											Przemysł farmaceutyczny
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:tws"  title="Sektor GPW: Przemysł tworzyw sztucznych">
+											Przemysł tworzyw sztucznych
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:pal"  title="Sektor GPW: Przemysł paliwowy">
+											Przemysł paliwowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:mbu"  title="Sektor GPW: Przemysł materiałów budowlanych">
+											Przemysł materiałów budowlanych
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:ele"  title="Sektor GPW: Przemysł elektromaszynowy">
+											Przemysł elektromaszynowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:met"  title="Sektor GPW: Przemysł metalowy">
+											Przemysł metalowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:mot"  title="Sektor GPW: Przemysł motoryzacyjny">
+											Przemysł motoryzacyjny
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:sur"  title="Sektor GPW: Przemysł surowcowy">
+											Przemysł surowcowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:pin"  title="Sektor GPW: Przemysł inne">
+											Przemysł inne
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:kap"  title="Sektor GPW: Rynek kapitałowy">
+											Rynek kapitałowy
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:tel"  title="Sektor GPW: Telekomunikacja">
+											Telekomunikacja
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:ube"  title="Sektor GPW: Ubezpieczenia">
+											Ubezpieczenia
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:uin"  title="Sektor GPW: Usługi inne">
+											Usługi inne
+										</a>
+				</li>
+						</ul>	
+		</nav>
+	</div>
+		
+			<div class="box-left">
+		<div class="header"><h2>Według sektora NewConnect</h2></div>
+		<nav>
+			<ul class="subnavi">
+							<li>
+					<a href="/spolki-rating/sektor:nc-han"  title="Sektor NewConnect: Handel">
+											Handel
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-inf"  title="Sektor NewConnect: Informatyka">
+											Informatyka
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-nie"  title="Sektor NewConnect: Nieruchomości">
+											Nieruchomości
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-uin"  title="Sektor NewConnect: Usługi inne">
+											Usługi inne
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-med"  title="Sektor NewConnect: Media">
+											Media
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-ufi"  title="Sektor NewConnect: Usługi finansowe">
+											Usługi finansowe
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-inw"  title="Sektor NewConnect: Inwestycje">
+											Inwestycje
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-tec"  title="Sektor NewConnect: Technologie">
+											Technologie
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-bud"  title="Sektor NewConnect: Budownictwo">
+											Budownictwo
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-wyp"  title="Sektor NewConnect: Wypoczynek">
+											Wypoczynek
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-tel"  title="Sektor NewConnect: Telekomunikacja">
+											Telekomunikacja
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-eha"  title="Sektor NewConnect: e-handel">
+											e-handel
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-rec"  title="Sektor NewConnect: Recykling">
+											Recykling
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-ozd"  title="Sektor NewConnect: Ochrona zdrowia">
+											Ochrona zdrowia
+										</a>
+				</li>
+							<li>
+					<a href="/spolki-rating/sektor:nc-eco"  title="Sektor NewConnect: Eco-energia">
+											Eco-energia
+										</a>
+				</li>
+						</ul>	
+		</nav>
+	</div>
+			
+	</div>
+</section><div class="" style="margin-bottom: 10px;">
+	<script type="text/javascript"><!--
+		document.write('<iframe src="//www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FBiznesRadarpl%2F378256905532221&amp;width=300&amp;height=230&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=false&amp;header=true&amp;appId=140853922612234" style="border:none; overflow:hidden; width:300px; height:230px;"></iframe>');
+	//--></script>
+</div>
+	</div>
+</div>
+			<div class="cb"></div>
+		</div>
+		<div class="cb"></div>
+	</div>
+	
+	<header>
+		<div id="header" itemtype="http://schema.org/WPHeader" itemscope="">
+						<div id="logo"><a href="/"><img src="/gfx/logo-2.png" alt="BiznesRadar.pl" /></a></div>
+						<div id="radarStatus"></div> 
+			<div id="menu">
+				<nav>
+					<ul class="topmenu" id="topmenu">
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope=""><span itemprop="name"><a itemprop="url" id="menu_radar" href="/" title="Radar">RADAR</a></span></li>
+						
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="roll">
+							<span itemprop="name"><a itemprop="url" id="menu_news" href="/artykuly/" title="Wiadomości">WIADOMOŚCI</a></span>
+							<ul id="menu-expand-news" class="expand-container">
+								<li class="news-block">
+																			<div class="report clearfix">
+																																	<a class="title" href="/temat/57,dywidendowe-podsumowanie-roku" title="Dywidendowe podsumowanie roku">Dywidendowe podsumowanie roku</a>
+										</div>
+																												<label>Najważniejsze wiadomości</label>
+										<div class="news-main">
+											<ul class="clearfix">
+																									<li>
+																												<a class="image" href="/a/116613,przeglad-informacji-ze-spolek-2023-03-31">
+															<img src="//m.biznesradar.pl/ceab78ca0c2826d1c14d9819553237f1,150,100,1,0.png" alt="" />
+														</a>
+																												<a class="title" href="/a/116613,przeglad-informacji-ze-spolek-2023-03-31">Przegląd informacji ze spółek (2023-03-31)</a>
+																											</li>
+																									<li>
+																												<a class="image" href="/a/116616,strategia-elektrotim-na-lata-2023-25">
+															<img src="//m.biznesradar.pl/5168859cc59bff2738e6eb8ea6e063e2,150,100,1,0.jpg" alt="" />
+														</a>
+																												<a class="title" href="/a/116616,strategia-elektrotim-na-lata-2023-25">Strategia ELEKTROTIM na lata 2023-25</a>
+																											</li>
+																									<li>
+																												<a class="image" href="/a/116604,dywidendowe-podsumowanie-13-tygodnia-2023-r">
+															<img src="//m.biznesradar.pl/a62d02bc715faed41d0804cd2657fb9c,150,100,1,0.png" alt="" />
+														</a>
+																												<a class="title" href="/a/116604,dywidendowe-podsumowanie-13-tygodnia-2023-r">Dywidendowe podsumowanie 13. tygodnia 2023 r.</a>
+																											</li>
+																							</ul>
+											<div itemprop="name" class="more-container">
+												<a itemprop="url" class="more" href="/artykuly/">więcej wiadomości &raquo;</a>
+											</div>
+										</div>
+																	</li>	
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">Polecamy również</li>
+										<li itemprop="name" class="highlight"><a itemprop="url" href="/komentarze-gieldowe/" title="Komentarze giełdowe">Komentarze giełdowe</a></li>
+																				<li itemprop="name" class="highlight"><a itemprop="url" href="/news-archive/2,1" title="Komunikaty ESPI/EBI">Komunikaty ESPI/EBI</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="roll active">
+							<span itemprop="name"><a itemprop="url" id="menu_profiles" href="/gielda/akcje_gpw" title="Notowania giełdowe"><strong>GIEŁDA</strong></a></span>
+							<ul class="expand-container">
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">GPW</li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/akcje_gpw" title="Notowania akcji GPW">Akcje GPW</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/newconnect" title="Notowania akcji NewConnect">Akcje NewConnect</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/akcje_globalconnect" title="Notowania akcji GlobalConnect">Akcje GlobalConnect</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/indeksy" title="Notowania indeksów GPW">Indeksy</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/obligacje" title="Notowania obligacji rynku Catalyst GPW">Obligacje</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/pochodne_kontrakty" title="Notowania kontraktów terminowych GPW">Kontrakty terminowe</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/pochodne_opcje" title="Notowania kontraktów opcyjnych GPW">Opcje</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/etf" title="Notowania ETF GPW">ETF</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/strukturyzowane" title="Notowania produktów strukturyzowanych">Strukturyzowane</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/certyfikaty_inwestycyjne" title="Notowania certyfikatów inwestycyjnych">Certyfikaty inwestycyjne</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/warranty" title="Notowania warratnów GPW">Warranty</a></li>
+									</ul>
+								</li>
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">Komponenty</li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/indeks:WIG20" title="Notowania spółek z indeksu WIG20">WIG20</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/indeks:WIG30" title="Notowania spółek z indeksu WIG30">WIG30</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/indeks:mWIG40" title="Notowania spółek z indeksu mWIG40">mWIG40</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/indeks:sWIG80" title="Notowania spółek z indeksu sWIG80">sWIG80</a></li>
+										<li class="seperated label">Świat</li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/indeksy_swiatowe" title="Notowania indeksów zagranicznych">Indeksy światowe</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/towary" title="Notowania kontaktów terminowych na towary i surowce">Towary</a></li>
+										<li itemprop="name"><a itemprop="url" href="/gielda/akcje_zagraniczne" title="Notowania akcji zagranicznych">Akcje zagraniczne</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="roll">
+							<span itemprop="name"><a itemprop="url" id="menu_funds" href="/fundusze/krajowe-akcji" title="Fundusze inwestycyjne">FUNDUSZE</a></span>
+							<ul id="menu-expand-funds" class="expand-container">
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">TFI</li>
+																																																																			<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-akcji" title="Fundusze inwestycyjne krajowe Akcji polskich">Akcji polskich</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-papierow-dluznych" title="Fundusze inwestycyjne krajowe Papierów dłużnych">Papierów dłużnych</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-rynku-pienieznego" title="Fundusze inwestycyjne krajowe Gotówkowe i pieniężne">Gotówkowe i pieniężne</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-zrownowazone" title="Fundusze inwestycyjne krajowe Zrównoważone">Zrównoważone</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-stabilnego-wzrostu" title="Fundusze inwestycyjne krajowe Stabilnego wzrostu">Stabilnego wzrostu</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-inne" title="Fundusze inwestycyjne krajowe Inne">Inne</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/krajowe-akcji-rynkow-zagranicznych" title="Fundusze inwestycyjne krajowe Akcji rynków zagranicznych">Akcji rynków zagranicznych</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/ppk" title="Fundusze inwestycyjne krajowe PPK zdefiniowanej daty">PPK zdefiniowanej daty</a></li>
+																																																															</ul>
+								</li>
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">Zagraniczne</li>
+																																																																																								<li itemprop="name"><a itemprop="url" href="/fundusze/zagraniczne-akcji" title="Fundusze inwestycyjne zagraniczne Akcji">Akcji</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/zagraniczne-papierow-dluznych" title="Fundusze inwestycyjne zagraniczne Papierów dłużnych">Papierów dłużnych</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/zagraniczne-rynku-pienieznego" title="Fundusze inwestycyjne zagraniczne Rynku pieniężnego">Rynku pieniężnego</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/zagraniczne-mieszane" title="Fundusze inwestycyjne zagraniczne Mieszane">Mieszane</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/zagraniczne-ochrony-kapitalu" title="Fundusze inwestycyjne zagraniczne Ochrony kapitału">Ochrony kapitału</a></li>
+																									<li itemprop="name"><a itemprop="url" href="/fundusze/zagraniczne-inne" title="Fundusze inwestycyjne zagraniczne Inne">Inne</a></li>
+																																										</ul>
+								</li>
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">OFE</li>
+										<li itemprop="name"><a itemprop="url" href="/fundusze/ofe" title="Otwarte Fundusze Emerytalne">OFE</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="roll">
+							<span itemprop="name"><a itemprop="url" id="menu_currency" href="/waluty/forex" title="Notowania walut">WALUTY</a></span>
+							<ul id="menu-expand-currency" class="expand-container under">
+								<li class="block currency">
+									<ul class="block-items">
+										<li itemprop="name"><a itemprop="url" href="/waluty/forex" title="Notowania FOREX">FOREX</a></li>
+										<li itemprop="name"><a itemprop="url" href="/waluty/nbp" title="Kursy walut NBP">NBP</a></li>
+										<li itemprop="name"><a itemprop="url" href="/waluty/bitcoin" title="Notowania kryptowalut">Kryptowaluty</a></li>
+										<li itemprop="name"><a itemprop="url" href="/stopy-procentowe/" title="Stopy procentowe NBP">Stopy procentowe</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="">
+							<span itemprop="name"><a itemprop="url" id="menu_dividends" href="/dywidendy/" title="Dywidendy">DYWIDENDY</a></span>
+						</li>
+																		
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="roll">
+							<span class="newf">NARZĘDZIA</span>
+							<ul class="expand-container">
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">Akcje</li>
+										<li itemprop="name"><a itemprop="url" href="/statystyka-sesji/" title="Statystyka sesji GPW">Statystyka sesji GPW</a></li>
+										<li itemprop="name"><a itemprop="url" href="/symbols-rank/" title="Ranking popularności spółek">Ranking popularności spółek</a></li>
+										<li itemprop="name" class=""><a itemprop="url" href="/skaner-akcji/" title="Skaner akcji GPW">Skaner akcji GPW</a></li>
+										<li itemprop="name" class=""><a itemprop="url" href="/rekomendacje/" title="Rekomendacje giełdowe">Rekomendacje</a></li>
+										<li itemprop="name"><a itemprop="url" href="/dynamika-obrotow/" title="Dynamika obrotów akcji GPW i NewConnect">Dynamika obrotów GPW</a></li>
+																				<li itemprop="name"><a itemprop="url" href="/branze/" title="Stopy zwrotu z podziełem na branże">Stopy zwrotu z podziełem na branże</a></li>
+										<li itemprop="name"><a itemprop="url" href="/minmax/" title="Nowe maksima/minima">Nowe maksima/minima</a></li>
+										<li itemprop="name"><a itemprop="url" href="/trendy/" title="Trendy">Trendy</a></li>
+																				<li itemprop="name" class=""><a itemprop="url" href="/sygnaly-analizy-technicznej/" title="Sygnały analizy technicznej">Sygnały analizy technicznej</a></li>
+										<li itemprop="name" class=""><a itemprop="url" href="/formacje-swiecowe/" title="Formacje świecowe">Formacje świecowe</a></li>
+										<li itemprop="name" class="newf"><a itemprop="url" href="/kalendarium/" title="Kalendarium">Kalendarium</a></li>
+										<li itemprop="name" class="newf"><a itemprop="url" href="/transakcje-pakietowe/" title="Transakcje pakietowe">Transakcje pakietowe</a></li>
+									</ul>
+								</li>
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">Fundusze</li>
+										<li itemprop="name"><a itemprop="url" href="/symbols-rank/funds" title="Ranking popularności funduszy">Ranking popularności funduszy</a></li>
+									</ul>
+								</li>
+								<li class="block">
+									<ul class="block-items">
+										<li class="label">Inne</li>
+										<li itemprop="name" class=""><a itemprop="url" href="/trendomierz/" onclick="if(!Model.isUserLogged()){Controller.showLoginModal();return false;}" title="Trendomierz">Trendomierz</a></li>
+										<li itemprop="name" class=""><a itemprop="url" href="/wskazniki-makroekonomiczne/" title="Wskaźniki makroekonomiczne">Dane makro</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						
+						<li itemtype="http://schema.org/SiteNavigationElement" itemscope="" class="roll" title="Portfel">
+							<span itemprop="name"><a itemprop="url" id="menu_wallets" href="/portfele/">PORTFEL</a></span>
+							<ul id="menu-expand-wallets" class="expand-container under">
+								<li class="block wallets">
+									<ul class="block-items">
+										<li itemprop="name"><a itemprop="url" href="/portfele/" title="Portfele">Portfele</a></li>
+										<li itemprop="name"><a itemprop="url" href="/alerts/" title="Alerty" onclick="if(!Model.isUserLogged()){Controller.showLoginModal(0, $(this).attr('href'), true);return false;}">Alerty</a></li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+											</ul>
+				</nav>
+			</div>
+						<script type="text/javascript"><!--
+				document.write('<iframe id="fb_like_button" src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.facebook.com%2Fpages%2FBiznesRadarpl%2F378256905532221&amp;send=false&amp;layout=button_count&amp;width=292&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21&amp;appId=140853922612234" style="border:none; overflow:hidden; width:292px; height:21px;" scrolling="no" frameborder="0"></iframe>');
+			//--></script>
+					</div>
+	</header>
+	
+	
+	<footer>
+		<div id="footer" itemtype="http://schema.org/WPFooter" itemscope="">
+			<div id="footer-datasrc">
+								Notowania GPW opóźnione 15 min. 
+				<span style="display:inline-block;padding-right:10px;">
+					Notowania GPW/NC dostarcza <a href="http://www.bdm.com.pl/" target="_blank">Dom Maklerski BDM S.A.</a>
+				</span>
+				<span style="display:inline-block;padding-right:10px;">
+					Dane finansowe oraz informacje o akcjonariuszach dostarcza <a href="http://www.quantresearch.pl/" target="_blank">Quant Research Sp. z o.o.</a>
+									</span>
+							</div>
+			
+			&copy; 2010-2023 BIZNESRADAR sp. z o.o. &bull; 
+			Wszystkie prawa zastrzeżone &bull; 
+			produkcja: <a href="http://www.w3media.pl">W3media.pl</a> &bull; 
+			<a href="/about/">O nas</a> &bull;
+			<a href="/information/privacy-policy">Polityka prywatności</a> &bull;
+			<a href="/information/terms">Regulamin</a> &bull;
+			<a href="/reklama/">Reklama</a> &bull;
+			<a href="/contact/">Kontakt</a>
+			<div class="cb"><!-- --></div>	
+			<div class="footer-disclaimer">Korzystanie z serwisu oznacza akceptację <a href="/information/terms">regulaminu</a>. Prezentowanie kwotowania nie mogą służyć do zawierania jakichkolwiek transakcji, ani podejmowania decyzji inwestycyjnych...</div>
+			<div class="footer-mobile">
+				<a href="//m.biznesradar.pl/" onclick="$.cookie('mff', null, {path: '/', domain: '.' + serviceRootDomain});">Mobilna wersja BiznesRadar.pl</a>
+				<a class="android_app" target="_blank" href="https://market.android.com/details?id=com.Android.BiznesRadar">Aplikacja dla systemu Android</a>
+				<a class="widgets" href="/widgets/notowania-na-strone-lub-bloga">Dla właścicieli witryn</a>
+				<div class="cb"></div>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<!-- adfooter -->
+<div id="fb-root"></div>
+
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId      : '140853922612234',
+			version    : 'v3.3',
+			xfbml      : false,
+			status     : true,
+			cookie     : true,
+			oauth      : true
+		});
+	};
+
+	(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+       
+</script>
+
+<script>View.bodyWrapperClose()</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src=https://www.googletagmanager.com/ns.html?id=GTM-MJF7SFF height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) --></body>
+</html>

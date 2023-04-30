@@ -1,0 +1,48 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.clean]
+command = "cargo"
+args = ["clean"]
+
+[tasks.win_new_dir]
+script = [
+    "IF EXIST frontend_server RMDIR /S /Q frontend_server",
+    "mkdir frontend_server"
+]
+
+[tasks.linux_new_dir]
+script = [
+    "rm -rf frontend_server",
+    "mkdir frontend_server"
+]
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.win_copy_files]
+script = [
+    "copy target\\release\\frontend.exe frontend_server"
+]
+
+[tasks.linux_copy_files]
+script = [
+    "cp target/release/frontend frontend_server"
+]
+
+[tasks.win-release-flow]
+dependencies = [
+    "win_new_dir",
+    "build",
+    "win_copy_files",
+    "clean"
+]
+
+[tasks.linux-release-flow]
+dependencies = [
+    "linux_new_dir",
+    "build",
+    "linux_copy_files",
+    "clean"
+]

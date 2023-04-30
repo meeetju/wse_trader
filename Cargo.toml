@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "backend",
+    "frontend",
+    "common",
+    "mock_third_party",
+    "tests"
+]

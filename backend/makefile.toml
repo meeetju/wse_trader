@@ -1,0 +1,53 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.clean]
+command = "cargo"
+args = ["clean"]
+
+[tasks.win_new_dir]
+script = [
+    "IF EXIST backend_server RMDIR /S /Q backend_server",
+    "mkdir backend_server"
+]
+
+[tasks.linux_new_dir]
+script = [
+    "rm -rf backend_server",
+    "mkdir backend_server"
+]
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release"]
+
+[tasks.win_copy_files]
+script = [
+    "copy target\\release\\backend.exe backend_server",
+    "copy links_mapping.yaml backend_server",
+    "copy requirements.yaml backend_server"
+]
+
+[tasks.linux_copy_files]
+script = [
+    "cp target/release/backend backend_server",
+    "cp links_mapping.yaml backend_server",
+    "cp requirements.yaml backend_server",
+
+]
+
+[tasks.win-release-flow]
+dependencies = [
+    "win_new_dir",
+    "build",
+    "win_copy_files",
+    "clean"
+]
+
+[tasks.linux-release-flow]
+dependencies = [
+    "linux_new_dir",
+    "build",
+    "linux_copy_files",
+    "clean"
+]

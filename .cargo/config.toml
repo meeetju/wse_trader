@@ -1,0 +1,3 @@
+[alias]
+mock-test-server = "run --bin mock_third_party"
+backend-test-mode = "run --bin backend -- --oa 127.0.0.1 --op 80 --companies-list-url http://127.0.0.1:8765/spolki-rating/akcje_gpw --company-indicators-url http://127.0.0.1:8765/notowania/gpw/"

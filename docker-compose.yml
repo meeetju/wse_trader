@@ -1,0 +1,23 @@
+version: "3"
+services:
+  # use the label of the expected container
+  be:
+    # specify source image for building container
+    # if we use the `image: wse_backend` then the image is downloaded
+    # if we specify the context end Dockerfile, then wse_backend
+    # will be built locally
+    build:
+      context: ./backend/docker
+      dockerfile: Dockerfile
+    entrypoint: /bin/bash  
+    command:  -c "backend --oa=0.0.0.0 --op=80"
+  fe:
+    build:
+      context: ./frontend/docker
+      dockerfile: Dockerfile
+    entrypoint: /bin/bash
+    command: -c "frontend --oa=0.0.0.0 --op=80 --ra=be --rp=80"
+    # specify port forwarding to the host
+    ports:
+      - 8080:80
+    

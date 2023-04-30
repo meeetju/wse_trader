@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Set limits for searched Warsaw Stock Exchange stocks</h2>
+
+<form action="/set_requirements" method="post">
+  <label for="ratings">Altman ratings:</label><br>
+  <select name="ratings[]" id="ratings" size="15" multiple>
+    <option value="AAA">AAA</option>
+    <option value="AA+">AA+</option>
+    <option value="AA">AA</option>
+    <option value="AA-">AA-</option>
+    <option value="A+">A+</option>
+    <option value="A">A</option>
+    <option value="A-">A-</option>
+    <option value="BBB+">BBB+</option>
+    <option value="BBB">BBB</option>
+    <option value="BBB-">BBB-</option>
+    <option value="BB+">BB+</option>
+    <option value="BB">BB</option>
+    <option value="BB-">BB-</option>
+  </select><br><br>
+  <label for="f_score_min_limit">Minimal Piotroski f-score:</label><br>
+  <input type="text" id="f_score_min_limit" name="f_score_min_limit" value="7"><br><br>
+  <label for="p_e_max_limit">Maximal P/E:</label><br>
+  <input type="text" id="p_e_max_limit" name="p_e_max_limit" value="15.0"><br><br>
+  <label for="roe_min_limit">Minimal ROE:</label><br>
+  <input type="text" id="roe_min_limit" name="roe_min_limit" value="15.0"><br><br>
+  <label for="p_bv_max_limit">Maximal P/BV:</label><br>
+  <input type="text" id="p_bv_max_limit" name="p_bv_max_limit" value="3.0"><br><br>
+  <label for="p_bv_g_max_limit">Maximal P/BV Graham:</label><br>
+  <input type="text" id="p_bv_g_max_limit" name="p_bv_g_max_limit" value="3.0"><br><br>
+  <label for="dividend_years">Years with dividend:</label><br>
+  <select name="dividend_years[]" id="dividend_years" size="10" multiple>
+    <script>
+      var select = document.getElementById("dividend_years");
+      var current_year = new Date().getFullYear();
+      for (var i = current_year; i > current_year - 10; i--) {
+        var option = document.createElement("option");
+          option.value = i;
+          option.text = i;
+
+          select.appendChild(option)
+      }
+    </script>
+  </select><br><br>
+  <input type="submit" value="Submit">
+</form> 
+
+</body>
+</html>
